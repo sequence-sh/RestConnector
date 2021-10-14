@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using FluentAssertions;
 using Xunit;
 
@@ -7,42 +8,35 @@ namespace Reductech.EDR.Connectors.Rest.Tests
 
 public class StepGenerationTests
 {
-    public const string ExampleSpecification = @"
-openapi: 3.0.0
-info:
-  title: Sample API
-  description: Optional multiline or single-line description in [CommonMark](http://commonmark.org/help/) or HTML.
-  version: 0.1.9
-servers:
-  - url: http://api.example.com/v1
-    description: Optional server description, e.g. Main (production) server
-  - url: http://staging-api.example.com
-    description: Optional server description, e.g. Internal staging server for testing
-paths:
-  /users:
-    get:
-      summary: Returns a list of users.
-      description: Optional extended description in CommonMark or HTML.
-      responses:
-        '200':    # status code
-          description: A JSON array of user names
-          content:
-            application/json:
-              schema: 
-                type: array
-                items: 
-                  type: string
-";
-
-    [Fact]
-    public void TestGeneration()
+    [Theory]
+    [InlineData(nameof(SpecificationExamples.Example), "Example_users_Get")]
+    [InlineData(
+        nameof(SpecificationExamples.Orchestrator),
+        "Orchestrator_Bags_Get;Orchestrator_Bags_Post;Orchestrator_api_v_version_Bags_id_Get;Orchestrator_api_v_version_Bags_id_Patch;Orchestrator_api_v_version_Bags_id_Put;Orchestrator_api_v_version_Bags_id_Delete;Orchestrator_Bag_Sequences;Orchestrator_Logs_Get;Orchestrator_Runs_Get;Orchestrator_Runs_Post;Orchestrator_api_v_version_Runs_id_Get;Orchestrator_api_v_version_Runs_id_Patch;Orchestrator_api_v_version_Runs_id_Put;Orchestrator_api_v_version_Runs_id_Delete;Orchestrator_Sequence_Runs;Orchestrator_Sequences_Get;Orchestrator_Sequences_Post;Orchestrator_api_v_version_Sequences_id_Get;Orchestrator_api_v_version_Sequences_id_Patch;Orchestrator_api_v_version_Sequences_id_Put;Orchestrator_api_v_version_Sequences_id_Delete"
+    )]
+    public void TestFactoryNames(string specificationName, string expectedNamesString)
     {
-        var factories = DynamicStepGenerator.CreateStepFactories(ExampleSpecification).ToList();
+        var specificationText = SpecificationExamples.ResourceManager.GetString(specificationName)!;
+
+        var specification = new OpenAPISpecification(
+            specificationName,
+            "http://baseURL",
+            specificationText
+        );
+
+        var factories = DynamicStepGenerator
+            .CreateStepFactories(specification)
+            .ToList();
+
+        var expectedNames = expectedNamesString.Split(';').ToHashSet();
+        var actualNames   = new HashSet<string>();
 
         foreach (var stepFactory in factories)
         {
-            stepFactory.TypeName.Should().Be("users");
+            actualNames.Add(stepFactory.TypeName);
         }
+
+        actualNames.Should().BeEquivalentTo(expectedNames);
     }
 }
 
