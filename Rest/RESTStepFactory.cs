@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using CSharpFunctionalExtensions;
 using Microsoft.OpenApi.Models;
-using Newtonsoft.Json;
 using Reductech.EDR.Connectors.Rest.Errors;
 using Reductech.EDR.Core;
 using Reductech.EDR.Core.Attributes;
@@ -250,9 +251,15 @@ public class RESTStepFactory : IStepFactory
 
         try
         {
-            entity = JsonConvert.DeserializeObject<Entity>(
+            var options = new JsonSerializerOptions()
+            {
+                Converters = { new JsonStringEnumConverter(), VersionJsonConverter.Instance },
+                PropertyNameCaseInsensitive = true
+            };
+
+            entity = JsonSerializer.Deserialize<Entity>(
                 jsonString,
-                EntityJsonConverter.Instance
+                options
             );
         }
         catch (Exception e)
