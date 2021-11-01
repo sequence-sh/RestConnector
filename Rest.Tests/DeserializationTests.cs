@@ -13,6 +13,7 @@ using Reductech.EDR.Core;
 using Reductech.EDR.Core.Internal;
 using Reductech.EDR.Core.Internal.Serialization;
 using Reductech.EDR.Core.TestHarness;
+using Reductech.EDR.Core.Util;
 using RestSharp;
 using Xunit.Abstractions;
 
@@ -56,20 +57,23 @@ public partial class DeserializationTests
             connectorSettings.Settings = ConnectorSettingsDict;
             var connectorData = new ConnectorData(connectorSettings, assembly);
 
-            var stepFactoryStore = StepFactoryStore.Create(connectorData);
-            var loggerFactory    = TestLoggerFactory.Create();
-            loggerFactory.AddXunit(testOutputHelper);
-            var repository = new MockRepository(MockBehavior.Strict);
-
-            var externalContext   = ExternalContextSetupHelper.GetExternalContext(repository);
+            var repository        = new MockRepository(MockBehavior.Strict);
             var restClient        = RESTClientSetupHelper.GetRESTClient(repository, FinalChecks);
             var restClientFactory = new SingleRestClientFactory(restClient);
+
+            var externalContext =
+                ExternalContextSetupHelper.GetExternalContext(repository, restClientFactory);
+
+            var stepFactoryStore =
+                StepFactoryStore.TryCreate(externalContext, connectorData).GetOrThrow();
+
+            var loggerFactory = TestLoggerFactory.Create();
+            loggerFactory.AddXunit(testOutputHelper);
 
             var runner = new SCLRunner(
                 loggerFactory.CreateLogger("Test"),
                 stepFactoryStore,
-                externalContext,
-                restClientFactory
+                externalContext
             );
 
             var result = await runner.RunSequenceFromTextAsync(
@@ -115,7 +119,9 @@ public partial class DeserializationTests
                         new OpenAPISpecification(
                             "Orchestrator",
                             "http://orchestrator.com",
-                            SpecificationExamples.Orchestrator
+                            SpecificationExamples.Orchestrator,
+                            null,
+                            null
                         )
                     )
                 }

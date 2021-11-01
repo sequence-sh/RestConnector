@@ -3,6 +3,7 @@ using System.Linq;
 using System.Text.Json;
 using FluentAssertions;
 using Reductech.EDR.ConnectorManagement.Base;
+using Reductech.EDR.Core.Util;
 using Xunit;
 
 namespace Reductech.EDR.Connectors.Rest.Tests
@@ -50,7 +51,11 @@ public partial class StepGenerationTests
 
         TestOutputHelper.WriteLine(connectorSettingsJson);
 
-        var factories = dsg.CreateStepFactories(connectorSettings).ToList();
+        var factories = dsg.TryCreateStepFactories(
+                connectorSettings,
+                null!
+            )
+            .GetOrThrow();
 
         var expectedNames = expectedNamesString.Split(';').ToHashSet();
         var actualNames   = new HashSet<string>();
@@ -74,15 +79,12 @@ public partial class StepGenerationTests
     {
         var specificationText = SpecificationExamples.ResourceManager.GetString(specificationName)!;
 
-        var specification = new OpenAPISpecification(
-            specificationName,
-            "http://baseURL",
-            specificationText
-        );
-
-        var factories = DynamicStepGenerator
-            .CreateStepFactories(specification)
-            .ToList();
+        var factories = OpenAPISpecification.CreateStepFactories(
+                specificationName,
+                "http://baseURL",
+                specificationText
+            )
+            .GetOrThrow();
 
         var expectedNames = expectedNamesString.Split(';').ToHashSet();
         var actualNames   = new HashSet<string>();
