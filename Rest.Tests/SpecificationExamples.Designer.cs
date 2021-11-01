@@ -85,6 +85,29 @@ namespace Reductech.EDR.Connectors.Rest.Tests {
         
         /// <summary>
         ///   Looks up a localized string similar to {
+        ///  &quot;openapi&quot;: &quot;3.0.0&quot;,
+        ///  &quot;info&quot;: {
+        ///    &quot;title&quot;: &quot;Sample API&quot;,
+        ///    &quot;description&quot;: &quot;Optional multiline or single-line description in [CommonMark](http://commonmark.org/help/) or HTML.&quot;,
+        ///    &quot;version&quot;: &quot;0.1.9&quot;
+        ///  },
+        ///  &quot;servers&quot;: [
+        ///    {
+        ///      &quot;url&quot;: &quot;http://api.example.com/v1&quot;,
+        ///      &quot;description&quot;: &quot;Optional server description, e.g. Main (production) server&quot;
+        ///    },
+        ///    {
+        ///      &quot;url&quot;: &quot;http://staging-api.example.com&quot;,
+        ///      &quot;description&quot;: &quot;Optional server description, e.g. Internal staging server  [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string ExampleJson {
+            get {
+                return ResourceManager.GetString("ExampleJson", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {
         ///  &quot;openapi&quot;: &quot;3.0.1&quot;,
         ///  &quot;info&quot;: {
         ///    &quot;title&quot;: &quot;Reductech.EDR.Orchestrator.ClientAPI&quot;,

@@ -100,7 +100,10 @@ public sealed class RESTDynamicStep<T> : IStep<T>
             request = request.AddParameter(parameter.Parameter.Name, value, parameterType);
         }
 
-        var restClient = stateMonad.RestClientFactory.CreateRestClient(OperationMetadata.ServerUrl);
+        var restClient =
+            stateMonad.ExternalContext.RestClientFactory.CreateRestClient(
+                OperationMetadata.ServerUrl
+            );
 
         var resultString =
             await request.TryRun(restClient, cancellationToken);
