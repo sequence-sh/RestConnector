@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using Reductech.EDR.Core.Internal.Errors;
+using Reductech.EDR.Core.Steps;
 
 namespace Reductech.EDR.Connectors.Rest.Errors
 {
@@ -21,11 +22,19 @@ public sealed record ErrorCodeREST : ErrorCodeBase
         return localizedMessage;
     }
 
-
     /// <summary>
     /// Operation '{0}' is not implemented
     /// </summary>
-    public static readonly ErrorCodeREST OperationNotImplemented = new(nameof(OperationNotImplemented));
+    public static readonly ErrorCodeREST OperationNotImplemented =
+        new(nameof(OperationNotImplemented));
+
+    public static readonly ErrorCodeREST CouldNotLoadSpecification =
+        new(nameof(CouldNotLoadSpecification));
+
+    /// <summary>
+    /// Invalid Specification: '{0}'
+    /// </summary>
+    public static readonly ErrorCodeREST InvalidSpecification = new(nameof(InvalidSpecification));
 }
 
 }
