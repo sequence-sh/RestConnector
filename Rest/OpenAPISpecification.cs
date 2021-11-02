@@ -56,8 +56,8 @@ public record OpenAPISpecification(
         }
         else if (!string.IsNullOrWhiteSpace(SpecificationURL))
         {
-            var restClient = externalContext.RestClientFactory.CreateRestClient("");
-            var request    = new RestRequest(SpecificationURL, Method.GET);
+            var restClient = externalContext.RestClientFactory.CreateRestClient(SpecificationURL);
+            var request    = new RestRequest("", Method.GET);
 
             var response = restClient.Execute(request);
 
