@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO.Abstractions;
 using System.Reflection;
 using FluentAssertions;
 using Reductech.EDR.ConnectorManagement.Base;
@@ -14,8 +15,56 @@ namespace Reductech.EDR.Connectors.Rest.Tests
 [AutoTheory.UseTestOutputHelper]
 public partial class IntegrationTests
 {
-    [Fact(Skip = "Manual")]
-    public void TestGenerating()
+    public const string Skip = "manual";
+
+    [Fact(Skip = Skip)]
+    public void TestGeneratingFromFile()
+    {
+        var dictionary = new Dictionary<string, object>()
+        {
+            {
+                DynamicStepGenerator.SpecificationsKey, EntityConversionHelpers.ConvertToEntity(
+                    new OpenAPISpecification(
+                        "Reveal",
+                        "http://test.com",
+                        null,
+                        null,
+                        @"C:\Users\wainw\source\repos\Reductech\rest\Rest.Tests\Resources\Reveal.json"
+                    )
+                )
+            }
+        };
+
+        var assembly = Assembly.GetAssembly(typeof(RESTDynamicStep<>));
+
+        var context = new ExternalContext(
+            ExternalContext.Default.ExternalProcessRunner,
+            ExternalContext.Default.RestClientFactory,
+            ExternalContext.Default.Console,
+            (ConnectorInjection.FileSystemKey, new FileSystem())
+        );
+
+        var result =
+            StepFactoryStore.TryCreate(
+                context,
+                new ConnectorData(
+                    new ConnectorSettings()
+                    {
+                        Enable   = true,
+                        Id       = "Reductech.EDR.Connectors.Rest",
+                        Settings = dictionary,
+                        Version  = "1.0"
+                    },
+                    assembly
+                )
+            );
+
+        result.ShouldBeSuccessful();
+        result.Value.Dictionary.Keys.Should().Contain("Reveal_Cases_Get");
+    }
+
+    [Fact(Skip = Skip)]
+    public void TestGeneratingFromURL()
     {
         var dictionary = new Dictionary<string, object>()
         {
@@ -50,7 +99,6 @@ public partial class IntegrationTests
             );
 
         result.ShouldBeSuccessful();
-
         result.Value.Dictionary.Keys.Should().Contain("Reveal_Cases_Get");
     }
 }
