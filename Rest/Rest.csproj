@@ -31,7 +31,9 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.OpenApi" Version="1.2.3" />
     <PackageReference Include="Microsoft.OpenApi.Readers" Version="1.2.3" />
-    <PackageReference Include="Reductech.EDR.Core" Version="0.12.0-a.main.2111011707" />
+    <PackageReference Include="Reductech.EDR.Core" Version="0.12.0-a.main.2111031910" >
+      <ExcludeAssets>runtime</ExcludeAssets>
+    </PackageReference>
     <PackageReference Include="System.IO.Abstractions" Version="13.2.47" />
   </ItemGroup>
 
