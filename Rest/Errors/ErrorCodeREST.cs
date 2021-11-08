@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics;
 using Reductech.EDR.Core.Internal.Errors;
-using Reductech.EDR.Core.Steps;
 
 namespace Reductech.EDR.Connectors.Rest.Errors
 {
@@ -28,6 +27,9 @@ public sealed record ErrorCodeREST : ErrorCodeBase
     public static readonly ErrorCodeREST OperationNotImplemented =
         new(nameof(OperationNotImplemented));
 
+    /// <summary>
+    /// Could not load OpenAPI REST Specification
+    /// </summary>
     public static readonly ErrorCodeREST CouldNotLoadSpecification =
         new(nameof(CouldNotLoadSpecification));
 

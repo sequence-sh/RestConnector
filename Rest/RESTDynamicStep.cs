@@ -31,7 +31,7 @@ public sealed class RESTDynamicStep<T> : IStep<T>
     public RESTDynamicStep(
         OperationMetadata operationMetadata,
         Func<string, Result<T, IErrorBuilder>> convertResultFunc,
-        IReadOnlyList<(IStep step, RESTStepParameter restStepParameter)> allParameters,
+        IReadOnlyList<(IStep step, IRESTStepParameter restStepParameter)> allParameters,
         TextLocation? textLocation)
     {
         OperationMetadata = operationMetadata;
@@ -46,7 +46,7 @@ public sealed class RESTDynamicStep<T> : IStep<T>
     /// <summary>
     /// REST Parameters and their values as steps
     /// </summary>
-    public IReadOnlyList<(IStep step, RESTStepParameter restStepParameter)> AllParameters { get; }
+    public IReadOnlyList<(IStep step, IRESTStepParameter restStepParameter)> AllParameters { get; }
 
     /// <inheritdoc />
     public TextLocation? TextLocation { get; set; }
@@ -67,7 +67,7 @@ public sealed class RESTDynamicStep<T> : IStep<T>
         CancellationToken cancellationToken)
     {
         var errors          = new List<IError>();
-        var parameterValues = new List<(RESTStepParameter parameter, string value)>();
+        var parameterValues = new List<(IRESTStepParameter parameter, string value)>();
 
         foreach (var (step, restStepParameter) in AllParameters)
         {
@@ -87,17 +87,17 @@ public sealed class RESTDynamicStep<T> : IStep<T>
 
         foreach (var (parameter, value) in parameterValues)
         {
-            var parameterType = parameter.Parameter.In switch
+            var parameterType = parameter.ParameterLocation switch
             {
                 ParameterLocation.Query => ParameterType.QueryString,
                 ParameterLocation.Header => ParameterType.HttpHeader,
                 ParameterLocation.Path => ParameterType.UrlSegment,
                 ParameterLocation.Cookie => ParameterType.Cookie,
                 null => ParameterType.Cookie,
-                _ => throw new ArgumentOutOfRangeException(parameter.Parameter.In?.ToString())
+                _ => throw new ArgumentOutOfRangeException(parameter.ParameterLocation?.ToString())
             };
 
-            request = request.AddParameter(parameter.Parameter.Name, value, parameterType);
+            request = request.AddParameter(parameter.ParameterName, value, parameterType);
         }
 
         var restClient =

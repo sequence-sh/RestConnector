@@ -137,5 +137,34 @@ namespace Reductech.EDR.Connectors.Rest.Tests {
                 return ResourceManager.GetString("Orchestrator", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {
+        ///  &quot;swagger&quot;: &quot;2.0&quot;,
+        ///  &quot;info&quot;: {
+        ///    &quot;version&quot;: &quot;V2&quot;,
+        ///    &quot;title&quot;: &quot;Reveal API&quot;,
+        ///    &quot;description&quot;: &quot;&lt;a href=\&quot;http://www.revealdata.com/\&quot;&gt;Learn more &amp;raquo;&lt;/a&gt;&quot;,
+        ///    &quot;x-swagger-net-version&quot;: &quot;8.3.25.001&quot;
+        ///  },
+        ///  &quot;host&quot;: &quot;salient-eu.revealdata.com&quot;,
+        ///  &quot;basePath&quot;: &quot;/rest&quot;,
+        ///  &quot;schemes&quot;: [
+        ///    &quot;https&quot;
+        ///  ],
+        ///  &quot;paths&quot;: {
+        ///    &quot;/api/archive/{caseId}/{archiveId}&quot;: {
+        ///      &quot;get&quot;: {
+        ///        &quot;tags&quot;: [
+        ///          &quot;Archive&quot;
+        ///        ],
+        ///        &quot;summary&quot;: &quot;Get a presigned url downloading an archive&quot;,
+        /// [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string RevealJson {
+            get {
+                return ResourceManager.GetString("RevealJson", resourceCulture);
+            }
+        }
     }
 }
