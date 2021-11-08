@@ -21,13 +21,22 @@ namespace Reductech.EDR.Connectors.Rest
 /// <inheritdoc />
 public class RESTStepFactory : IStepFactory
 {
+    /// <summary>
+    /// Create a new RESTStepFactory
+    /// </summary>
+    /// <param name="operationMetadata"></param>
     public RESTStepFactory(OperationMetadata operationMetadata)
     {
         OperationMetadata = operationMetadata;
 
+        var securityParameters =
+            operationMetadata.Operation.Security.SelectMany(x => x)
+                .Select(x => new RESTStepSecurityParameter(x.Key));
+
         ParameterDictionary =
             OperationMetadata.Operation.Parameters.OrderByDescending(x => x.Required)
-                .Select(x => new RESTStepParameter(x))
+                .Select(x => new RESTStepParameter(x) as IRESTStepParameter)
+                .Concat(securityParameters)
                 .GroupBy(x => x.Name)
                 .ToDictionary(
                     x => new StepParameterReference.Named(x.Key)
@@ -103,7 +112,7 @@ public class RESTStepFactory : IStepFactory
                     .WithLocation(freezeData.Location)
             );
 
-        var allProperties = new List<(IStep step, RESTStepParameter restStepParameter)>();
+        var allProperties = new List<(IStep step, IRESTStepParameter restStepParameter)>();
         var errors        = new List<IError>();
 
         foreach (var (stepParameterReference, sp1) in ParameterDictionary)
@@ -118,7 +127,7 @@ public class RESTStepFactory : IStepFactory
                 var nestedCallerMetadata = new CallerMetadata(
                     TypeName,
                     stepParameter.Name,
-                    TypeReference.Create(stepParameter.ActualType)
+                    TypeReference.Create(sp1.ActualType)
                 );
 
                 var frozenStep =

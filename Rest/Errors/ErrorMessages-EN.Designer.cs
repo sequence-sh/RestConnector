@@ -61,6 +61,15 @@ namespace Reductech.EDR.Connectors.Rest.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not load OpenAPI REST Specification.
+        /// </summary>
+        internal static string CouldNotLoadSpecification {
+            get {
+                return ResourceManager.GetString("CouldNotLoadSpecification", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Operation &apos;{0}&apos; is not implemented.
         /// </summary>
         internal static string OperationNotImplemented {
