@@ -108,12 +108,12 @@ public class RESTStepFactory : IStepFactory
 
         foreach (var (stepParameterReference, sp1) in ParameterDictionary)
         {
-            var stepParameter = (RESTStepParameter)sp1;
+            var stepParameter = (IRESTStepParameter)sp1;
 
             if (freezeData.StepProperties.TryGetValue(
-                stepParameterReference,
-                out var value
-            ))
+                    stepParameterReference,
+                    out var value
+                ))
             {
                 var nestedCallerMetadata = new CallerMetadata(
                     TypeName,
@@ -131,11 +131,11 @@ public class RESTStepFactory : IStepFactory
             }
             else if (stepParameter.Required)
             {
-                var defaultValue = stepParameter.Parameter.Schema.Default;
+                var defaultValue = stepParameter.DefaultValue?.ToString();
 
                 if (defaultValue is not null)
                 {
-                    var constantString = new StringConstant(defaultValue.ToString()!);
+                    var constantString = new StringConstant(defaultValue);
                     allProperties.Add(new(constantString, stepParameter));
                 }
                 else
