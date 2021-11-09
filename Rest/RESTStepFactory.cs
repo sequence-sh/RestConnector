@@ -28,9 +28,13 @@ public class RESTStepFactory : IStepFactory
     {
         OperationMetadata = operationMetadata;
 
+        var securityParameters = OperationMetadata.Operation.Security.SelectMany(x => x.Keys)
+            .Select(x => new RESTStepSecurityParameter(x));
+
         ParameterDictionary =
             OperationMetadata.Operation.Parameters.OrderByDescending(x => x.Required)
-                .Select(x => new RESTStepParameter(x))
+                .Select(x => new RESTStepParameter(x) as IRESTStepParameter)
+                .Concat(securityParameters)
                 .GroupBy(x => x.Name)
                 .ToDictionary(
                     x => new StepParameterReference.Named(x.Key)
