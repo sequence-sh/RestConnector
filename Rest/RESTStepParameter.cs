@@ -61,6 +61,9 @@ public class RESTStepParameter : IRESTStepParameter
 
     /// <inheritdoc />
     public ParameterLocation? ParameterLocation => Parameter.In;
+
+    /// <inheritdoc />
+    public object? DefaultValue => Parameter.Schema.Default;
 }
 
 }

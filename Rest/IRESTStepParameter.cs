@@ -18,6 +18,11 @@ public interface IRESTStepParameter : IStepParameter
     /// The location of the parameter
     /// </summary>
     ParameterLocation? ParameterLocation { get; }
+
+    /// <summary>
+    /// The default Parameter value
+    /// </summary>
+    object? DefaultValue { get; }
 }
 
 }

@@ -24,14 +24,12 @@ public class RESTStepFactory : IStepFactory
     /// <summary>
     /// Create a new RESTStepFactory
     /// </summary>
-    /// <param name="operationMetadata"></param>
     public RESTStepFactory(OperationMetadata operationMetadata)
     {
         OperationMetadata = operationMetadata;
 
-        var securityParameters =
-            operationMetadata.Operation.Security.SelectMany(x => x)
-                .Select(x => new RESTStepSecurityParameter(x.Key));
+        var securityParameters = OperationMetadata.Operation.Security.SelectMany(x => x.Keys)
+            .Select(x => new RESTStepSecurityParameter(x));
 
         ParameterDictionary =
             OperationMetadata.Operation.Parameters.OrderByDescending(x => x.Required)
@@ -117,17 +115,17 @@ public class RESTStepFactory : IStepFactory
 
         foreach (var (stepParameterReference, sp1) in ParameterDictionary)
         {
-            var stepParameter = (RESTStepParameter)sp1;
+            var stepParameter = (IRESTStepParameter)sp1;
 
             if (freezeData.StepProperties.TryGetValue(
-                stepParameterReference,
-                out var value
-            ))
+                    stepParameterReference,
+                    out var value
+                ))
             {
                 var nestedCallerMetadata = new CallerMetadata(
                     TypeName,
                     stepParameter.Name,
-                    TypeReference.Create(sp1.ActualType)
+                    TypeReference.Create(stepParameter.ActualType)
                 );
 
                 var frozenStep =
@@ -140,11 +138,11 @@ public class RESTStepFactory : IStepFactory
             }
             else if (stepParameter.Required)
             {
-                var defaultValue = stepParameter.Parameter.Schema.Default;
+                var defaultValue = stepParameter.DefaultValue?.ToString();
 
                 if (defaultValue is not null)
                 {
-                    var constantString = new StringConstant(defaultValue.ToString()!);
+                    var constantString = new StringConstant(defaultValue);
                     allProperties.Add(new(constantString, stepParameter));
                 }
                 else

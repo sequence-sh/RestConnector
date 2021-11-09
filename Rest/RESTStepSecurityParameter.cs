@@ -61,6 +61,9 @@ public class RESTStepSecurityParameter : IRESTStepParameter
 
     /// <inheritdoc />
     public ParameterLocation? ParameterLocation => OpenApiSecurityScheme.In;
+
+    /// <inheritdoc />
+    public object? DefaultValue => "";
 }
 
 }
