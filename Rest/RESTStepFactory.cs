@@ -21,6 +21,9 @@ namespace Reductech.EDR.Connectors.Rest
 /// <inheritdoc />
 public class RESTStepFactory : IStepFactory
 {
+    /// <summary>
+    /// Create a new RESTStepFactory
+    /// </summary>
     public RESTStepFactory(OperationMetadata operationMetadata)
     {
         OperationMetadata = operationMetadata;
@@ -103,7 +106,7 @@ public class RESTStepFactory : IStepFactory
                     .WithLocation(freezeData.Location)
             );
 
-        var allProperties = new List<(IStep step, RESTStepParameter restStepParameter)>();
+        var allProperties = new List<(IStep step, IRESTStepParameter restStepParameter)>();
         var errors        = new List<IError>();
 
         foreach (var (stepParameterReference, sp1) in ParameterDictionary)

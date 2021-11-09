@@ -28,6 +28,9 @@ public sealed record ErrorCodeREST : ErrorCodeBase
     public static readonly ErrorCodeREST OperationNotImplemented =
         new(nameof(OperationNotImplemented));
 
+    /// <summary>
+    /// Could not load OpenAPI Specification: '{0}'
+    /// </summary>
     public static readonly ErrorCodeREST CouldNotLoadSpecification =
         new(nameof(CouldNotLoadSpecification));
 
