@@ -102,6 +102,7 @@ public class RESTStepFactory : IStepFactory
         if (!callerMetadata.ExpectedType.Allow(TypeReference.Actual.Entity, typeResolver))
             return Result.Failure<IStep, IError>(
                 ErrorCode.WrongType.ToErrorBuilder(
+                        TypeName,
                         callerMetadata.ExpectedType,
                         callerMetadata.ParameterName,
                         TypeName,
