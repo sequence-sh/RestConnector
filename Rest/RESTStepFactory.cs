@@ -77,7 +77,7 @@ public class RESTStepFactory : IStepFactory
         {
             OperationType.Get    => TypeReference.Actual.Entity,
             OperationType.Put    => TypeReference.Unit.Instance,
-            OperationType.Post   => TypeReference.Actual.String,
+            OperationType.Post   => TypeReference.Actual.Entity,
             OperationType.Delete => TypeReference.Unit.Instance,
             OperationType.Patch  => TypeReference.Unit.Instance,
             _                    => null
@@ -99,11 +99,14 @@ public class RESTStepFactory : IStepFactory
         TypeResolver typeResolver,
         FreezableStepData freezeData)
     {
-        if (!callerMetadata.ExpectedType.Allow(TypeReference.Actual.Entity, typeResolver))
+        var typeReference = GetTypeReference(OperationMetadata.OperationType)
+                         ?? TypeReference.Actual.Entity;
+
+        if (!callerMetadata.ExpectedType.Allow(typeReference, typeResolver))
             return Result.Failure<IStep, IError>(
                 ErrorCode.WrongType.ToErrorBuilder(
-                        TypeName,
-                        callerMetadata.ExpectedType,
+                        callerMetadata.StepName,
+                        callerMetadata.ExpectedType.Name,
                         callerMetadata.ParameterName,
                         TypeName,
                         nameof(Entity)
@@ -160,8 +163,6 @@ public class RESTStepFactory : IStepFactory
         {
             return Result.Failure<IStep, IError>(ErrorList.Combine(errors));
         }
-
-        var typeReference = GetTypeReference(OperationMetadata.OperationType);
 
         if (typeReference == TypeReference.Actual.Entity)
         {
