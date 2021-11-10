@@ -83,7 +83,19 @@ public sealed class RESTDynamicStep<T> : IStep<T>
         if (errors.Any())
             return Result.Failure<T, IError>(ErrorList.Combine(errors));
 
-        IRestRequest request = new RestRequest(OperationMetadata.Path, Method.GET);
+        var method = OperationMetadata.OperationType switch
+        {
+            OperationType.Get => Method.GET,
+            OperationType.Put => Method.PUT,
+            OperationType.Post => Method.POST,
+            OperationType.Delete => Method.DELETE,
+            OperationType.Options => Method.OPTIONS,
+            OperationType.Head => Method.HEAD,
+            OperationType.Patch => Method.PATCH,
+            _ => throw new ArgumentOutOfRangeException(OperationMetadata.OperationType.ToString())
+        };
+
+        IRestRequest request = new RestRequest(OperationMetadata.Path, method);
 
         foreach (var (parameter, value) in parameterValues)
         {
