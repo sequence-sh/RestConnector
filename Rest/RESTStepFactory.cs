@@ -31,15 +31,23 @@ public class RESTStepFactory : IStepFactory
         var securityParameters = OperationMetadata.Operation.Security.SelectMany(x => x.Keys)
             .Select(x => new RESTStepSecurityParameter(x));
 
+        var bodyParameters = operationMetadata.Operation.RequestBody is null
+            ? new List<IStepParameter>()
+            : new List<IStepParameter>()
+            {
+                new RESTStepBodyParameter(operationMetadata.Operation.RequestBody)
+            };
+
         ParameterDictionary =
             OperationMetadata.Operation.Parameters.OrderByDescending(x => x.Required)
-                .Select(x => new RESTStepParameter(x) as IRESTStepParameter)
+                .Select(x => new RESTStepParameter(x) as IStepParameter)
                 .Concat(securityParameters)
+                .Concat(bodyParameters)
                 .GroupBy(x => x.Name)
                 .ToDictionary(
                     x => new StepParameterReference.Named(x.Key)
                         as StepParameterReference,
-                    x => x.First() as IStepParameter
+                    x => x.First()
                 );
     }
 
@@ -115,44 +123,90 @@ public class RESTStepFactory : IStepFactory
             );
 
         var allProperties = new List<(IStep step, IRESTStepParameter restStepParameter)>();
-        var errors        = new List<IError>();
+
+        Maybe<(IStep<Entity>?, RESTStepBodyParameter)> bodyParameter =
+            Maybe<(IStep<Entity>?, RESTStepBodyParameter)>.None;
+
+        var errors = new List<IError>();
 
         foreach (var (stepParameterReference, sp1) in ParameterDictionary)
         {
-            var stepParameter = (IRESTStepParameter)sp1;
-
-            if (freezeData.StepProperties.TryGetValue(
-                    stepParameterReference,
-                    out var value
-                ))
+            if (sp1 is IRESTStepParameter stepParameter)
             {
-                var nestedCallerMetadata = new CallerMetadata(
-                    TypeName,
-                    stepParameter.Name,
-                    TypeReference.Create(stepParameter.ActualType)
-                );
-
-                var frozenStep =
-                    value.ConvertToStep().TryFreeze(nestedCallerMetadata, typeResolver);
-
-                if (frozenStep.IsFailure)
-                    errors.Add(frozenStep.Error);
-
-                allProperties.Add(new(frozenStep.Value, stepParameter));
-            }
-            else if (stepParameter.Required)
-            {
-                var defaultValue = stepParameter.DefaultValue?.ToString();
-
-                if (defaultValue is not null)
+                if (freezeData.StepProperties.TryGetValue(
+                        stepParameterReference,
+                        out var value
+                    ))
                 {
-                    var constantString = new StringConstant(defaultValue);
-                    allProperties.Add(new(constantString, stepParameter));
+                    var nestedCallerMetadata = new CallerMetadata(
+                        TypeName,
+                        stepParameter.Name,
+                        TypeReference.Create(stepParameter.ActualType)
+                    );
+
+                    var frozenStep =
+                        value.ConvertToStep().TryFreeze(nestedCallerMetadata, typeResolver);
+
+                    if (frozenStep.IsFailure)
+                        errors.Add(frozenStep.Error);
+
+                    allProperties.Add(new(frozenStep.Value, stepParameter));
                 }
-                else
+                else if (stepParameter.Required)
+                {
+                    var defaultValue = stepParameter.DefaultValue?.ToString();
+
+                    if (defaultValue is not null)
+                    {
+                        var constantString = new StringConstant(defaultValue);
+                        allProperties.Add(new(constantString, stepParameter));
+                    }
+                    else
+                    {
+                        errors.Add(
+                            ErrorCode.MissingParameter.ToErrorBuilder(stepParameter.Name)
+                                .WithLocation(freezeData.Location)
+                        );
+                    }
+                }
+            }
+            else if (sp1 is RESTStepBodyParameter bodyParameter1)
+            {
+                if (freezeData.StepProperties.TryGetValue(
+                        stepParameterReference,
+                        out var value
+                    ))
+                {
+                    var nestedCallerMetadata = new CallerMetadata(
+                        TypeName,
+                        bodyParameter1.Name,
+                        TypeReference.Actual.Entity
+                    );
+
+                    var frozenStep =
+                        value.ConvertToStep().TryFreeze(nestedCallerMetadata, typeResolver);
+
+                    if (frozenStep.IsFailure)
+                        errors.Add(frozenStep.Error);
+
+                    if (frozenStep.Value is IStep<Entity> entityStep)
+                    {
+                        bodyParameter = Maybe<(IStep<Entity>?, RESTStepBodyParameter)>.From(
+                            (entityStep, bodyParameter1)
+                        );
+                    }
+                    else
+                    {
+                        errors.Add(
+                            ErrorCode.MissingParameter.ToErrorBuilder(bodyParameter1.Name)
+                                .WithLocation(freezeData.Location)
+                        );
+                    }
+                }
+                else if (bodyParameter1.Required)
                 {
                     errors.Add(
-                        ErrorCode.MissingParameter.ToErrorBuilder(stepParameter.Name)
+                        ErrorCode.MissingParameter.ToErrorBuilder(bodyParameter1.Name)
                             .WithLocation(freezeData.Location)
                     );
                 }
@@ -170,6 +224,7 @@ public class RESTStepFactory : IStepFactory
                 OperationMetadata,
                 TryDeserializeToEntity,
                 allProperties,
+                bodyParameter,
                 freezeData.Location
             );
         }
@@ -180,6 +235,7 @@ public class RESTStepFactory : IStepFactory
                 OperationMetadata,
                 _ => Unit.Default,
                 allProperties,
+                bodyParameter,
                 freezeData.Location
             );
         }
@@ -190,6 +246,7 @@ public class RESTStepFactory : IStepFactory
                 OperationMetadata,
                 s => new StringStream(s),
                 allProperties,
+                bodyParameter,
                 freezeData.Location
             );
         }

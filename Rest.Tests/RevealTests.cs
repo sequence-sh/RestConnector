@@ -84,10 +84,7 @@ public partial class RevealTests
 
         restClientMock.Setup(
                 rc => rc.ExecuteAsync(
-                    It.Is<IRestRequest>(
-                        rr =>
-                            rr.Method == Method.POST && rr.Parameters.Count == 3
-                    ),
+                    It.Is<IRestRequest>((rr) => CheckPostRequest(rr)),
                     It.IsAny<CancellationToken>()
                 )
             )
@@ -101,12 +98,17 @@ public partial class RevealTests
             );
 
         var result = await runner.RunSequenceFromTextAsync(
-            "- AssertEqual ('a': 1) (Reveal_WorkFolder_Create caseId: '159' InControlAuthToken: '456' userId: '789')",
+            "- AssertEqual ('a': 1) (Reveal_WorkFolder_Create caseId: '159' InControlAuthToken: '456' userId: '789' body: (name: 'myNewFolder'))",
             new Dictionary<string, object>(),
             CancellationToken.None
         );
 
         result.ShouldBeSuccessful();
+    }
+
+    static bool CheckPostRequest(IRestRequest restRequest)
+    {
+        return restRequest.Method == Method.POST && restRequest.Parameters.Count == 4;
     }
 
     [Fact]

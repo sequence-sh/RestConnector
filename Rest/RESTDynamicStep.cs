@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using CSharpFunctionalExtensions;
@@ -32,11 +33,13 @@ public sealed class RESTDynamicStep<T> : IStep<T>
         OperationMetadata operationMetadata,
         Func<string, Result<T, IErrorBuilder>> convertResultFunc,
         IReadOnlyList<(IStep step, IRESTStepParameter restStepParameter)> allParameters,
+        Maybe<(IStep<Entity>? step, RESTStepBodyParameter parameter)> bodyParameter,
         TextLocation? textLocation)
     {
         OperationMetadata = operationMetadata;
         ConvertResultFunc = convertResultFunc;
         AllParameters     = allParameters;
+        BodyParameter     = bodyParameter;
         TextLocation      = textLocation;
     }
 
@@ -47,6 +50,11 @@ public sealed class RESTDynamicStep<T> : IStep<T>
     /// REST Parameters and their values as steps
     /// </summary>
     public IReadOnlyList<(IStep step, IRESTStepParameter restStepParameter)> AllParameters { get; }
+
+    /// <summary>
+    /// The Body parameter
+    /// </summary>
+    public Maybe<(IStep<Entity>? step, RESTStepBodyParameter parameter)> BodyParameter { get; }
 
     /// <inheritdoc />
     public TextLocation? TextLocation { get; set; }
@@ -96,6 +104,19 @@ public sealed class RESTDynamicStep<T> : IStep<T>
         };
 
         IRestRequest request = new RestRequest(OperationMetadata.Path, method);
+
+        if (BodyParameter.HasValue && BodyParameter.Value.step is not null)
+        {
+            var bodyResult = await BodyParameter.Value.step.Run(stateMonad, cancellationToken);
+
+            if (bodyResult.IsFailure)
+                return bodyResult.ConvertFailure<T>();
+
+            var jsonElement = bodyResult.Value.ToJsonElement();
+            var obj         = JsonSerializer.Deserialize<object>(jsonElement.GetRawText())!;
+
+            request.AddJsonBody(obj);
+        }
 
         foreach (var (parameter, value) in parameterValues)
         {

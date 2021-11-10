@@ -9,6 +9,46 @@ namespace Reductech.EDR.Connectors.Rest
 {
 
 /// <summary>
+/// The REST body parameter
+/// </summary>
+public class RESTStepBodyParameter : IStepParameter
+{
+    public RESTStepBodyParameter(OpenApiRequestBody requestBody) => RequestBody = requestBody;
+
+    /// <summary>
+    /// The Request Body
+    /// </summary>
+    public OpenApiRequestBody RequestBody { get; }
+
+    /// <inheritdoc />
+    public string Name => "Body";
+
+    /// <inheritdoc />
+    public Type StepType { get; } = typeof(IStep<>).MakeGenericType(typeof(Entity));
+
+    /// <inheritdoc />
+    public Type ActualType { get; } = typeof(Entity);
+
+    /// <inheritdoc />
+    public IReadOnlyCollection<string> Aliases => new List<string>();
+
+    /// <inheritdoc />
+    public bool Required => RequestBody.Required;
+
+    /// <inheritdoc />
+    public string Summary => RequestBody.Description;
+
+    /// <inheritdoc />
+    public IReadOnlyDictionary<string, string> ExtraFields => new Dictionary<string, string>();
+
+    /// <inheritdoc />
+    public int? Order => null;
+
+    /// <inheritdoc />
+    public MemberType MemberType => MemberType.Step;
+}
+
+/// <summary>
 /// A security parameter to a REST Step
 /// </summary>
 public class RESTStepSecurityParameter : IRESTStepParameter
@@ -16,12 +56,8 @@ public class RESTStepSecurityParameter : IRESTStepParameter
     /// <summary>
     /// Create a new RESTStepSecurityParameter
     /// </summary>
-    public RESTStepSecurityParameter(OpenApiSecurityScheme openApiSecurityScheme)
-    {
+    public RESTStepSecurityParameter(OpenApiSecurityScheme openApiSecurityScheme) =>
         OpenApiSecurityScheme = openApiSecurityScheme;
-        ActualType            = typeof(StringStream);
-        StepType              = typeof(IStep<>).MakeGenericType(ActualType);
-    }
 
     /// <summary>
     /// The Security Scheme
@@ -32,10 +68,10 @@ public class RESTStepSecurityParameter : IRESTStepParameter
     public string Name => OpenApiSecurityScheme.Name;
 
     /// <inheritdoc />
-    public Type StepType { get; }
+    public Type StepType { get; } = typeof(IStep<>).MakeGenericType(typeof(StringStream));
 
     /// <inheritdoc />
-    public Type ActualType { get; }
+    public Type ActualType { get; } = typeof(StringStream);
 
     /// <inheritdoc />
     public IReadOnlyCollection<string> Aliases => ImmutableArray<string>.Empty;
