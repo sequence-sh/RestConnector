@@ -15,6 +15,7 @@ using Reductech.EDR.Core.Internal;
 using Reductech.EDR.Core.Internal.Serialization;
 using Reductech.EDR.Core.TestHarness;
 using RestSharp;
+using RestSharp.Serialization;
 using Xunit;
 
 namespace Reductech.EDR.Connectors.Rest.Tests
@@ -81,6 +82,9 @@ public partial class RevealTests
 
         var uri = new Uri("http://test.com/");
         restClientMock.SetupSet(x => x.BaseUrl = uri);
+
+        restClientMock.Setup(x => x.UseSerializer(It.IsAny<Func<IRestSerializer>>()))
+            .Returns(restClientMock.Object);
 
         restClientMock.Setup(
                 rc => rc.ExecuteAsync(
@@ -169,6 +173,9 @@ public partial class RevealTests
 
         var uri = new Uri("http://test.com/");
         restClientMock.SetupSet(x => x.BaseUrl = uri);
+
+        restClientMock.Setup(x => x.UseSerializer(It.IsAny<Func<IRestSerializer>>()))
+            .Returns(restClientMock.Object);
 
         restClientMock.Setup(
                 rc => rc.ExecuteAsync(

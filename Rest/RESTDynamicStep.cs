@@ -15,6 +15,7 @@ using Reductech.EDR.Core.Internal.Errors;
 using Reductech.EDR.Core.Steps.REST;
 using Reductech.EDR.Core.Util;
 using RestSharp;
+using RestSharp.Serializers.SystemTextJson;
 using Entity = Reductech.EDR.Core.Entity;
 
 namespace Reductech.EDR.Connectors.Rest
@@ -105,6 +106,11 @@ public sealed class RESTDynamicStep<T> : IStep<T>
 
         IRestRequest request = new RestRequest(OperationMetadata.Path, method);
 
+        var restClient =
+            stateMonad.ExternalContext.RestClientFactory.CreateRestClient(
+                OperationMetadata.ServerUrl
+            );
+
         if (BodyParameter.HasValue && BodyParameter.Value.step is not null)
         {
             var bodyResult = await BodyParameter.Value.step.Run(stateMonad, cancellationToken);
@@ -116,6 +122,10 @@ public sealed class RESTDynamicStep<T> : IStep<T>
             var obj         = JsonSerializer.Deserialize<object>(jsonElement.GetRawText())!;
 
             request.AddJsonBody(obj);
+
+            restClient.UseSystemTextJson(
+                new JsonSerializerOptions() { PropertyNameCaseInsensitive = false }
+            );
         }
 
         foreach (var (parameter, value) in parameterValues)
@@ -132,11 +142,6 @@ public sealed class RESTDynamicStep<T> : IStep<T>
 
             request = request.AddParameter(parameter.ParameterName, value, parameterType);
         }
-
-        var restClient =
-            stateMonad.ExternalContext.RestClientFactory.CreateRestClient(
-                OperationMetadata.ServerUrl
-            );
 
         var resultString =
             await request.TryRun(restClient, cancellationToken);
