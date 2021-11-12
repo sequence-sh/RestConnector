@@ -15,7 +15,6 @@ using Reductech.EDR.Core.Internal.Errors;
 using Reductech.EDR.Core.Steps.REST;
 using Reductech.EDR.Core.Util;
 using RestSharp;
-using RestSharp.Serializers.SystemTextJson;
 using Entity = Reductech.EDR.Core.Entity;
 
 namespace Reductech.EDR.Connectors.Rest
@@ -122,10 +121,6 @@ public sealed class RESTDynamicStep<T> : IStep<T>
             var obj         = JsonSerializer.Deserialize<object>(jsonElement.GetRawText())!;
 
             request.AddJsonBody(obj);
-
-            restClient.UseSystemTextJson(
-                new JsonSerializerOptions() { PropertyNameCaseInsensitive = false }
-            );
         }
 
         foreach (var (parameter, value) in parameterValues)

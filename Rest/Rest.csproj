@@ -31,7 +31,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.OpenApi" Version="1.2.3" />
     <PackageReference Include="Microsoft.OpenApi.Readers" Version="1.2.3" />
-    <PackageReference Include="Reductech.EDR.Core" Version="0.12.0-a.main.2111101845">
+    <PackageReference Include="Reductech.EDR.Core" Version="0.12.0-a.main.2111121052">
       <ExcludeAssets>runtime</ExcludeAssets>
     </PackageReference>
     <PackageReference Include="RestSharp.Serializers.SystemTextJson" Version="106.13.0" />
