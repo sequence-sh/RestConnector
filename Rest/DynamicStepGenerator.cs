@@ -1,15 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using CSharpFunctionalExtensions;
-using Reductech.EDR.ConnectorManagement.Base;
-using Reductech.EDR.Core;
+﻿using Reductech.EDR.ConnectorManagement.Base;
 using Reductech.EDR.Core.Abstractions;
-using Reductech.EDR.Core.Entities;
-using Reductech.EDR.Core.Internal;
 using Reductech.EDR.Core.Internal.Errors;
 
-namespace Reductech.EDR.Connectors.Rest
-{
+namespace Reductech.EDR.Connectors.Rest;
 
 /// <summary>
 /// Generates steps based on OpenAPI step definitions 
@@ -73,6 +66,4 @@ public class DynamicStepGenerator : IDynamicStepGenerator
     /// The key for OpenAPI specifications in the Settings
     /// </summary>
     public const string SpecificationsKey = "Specifications";
-}
-
 }

@@ -1,9 +1,7 @@
 ﻿using System.Diagnostics;
 using Reductech.EDR.Core.Internal.Errors;
-using Reductech.EDR.Core.Steps;
 
-namespace Reductech.EDR.Connectors.Rest.Errors
-{
+namespace Reductech.EDR.Connectors.Rest.Errors;
 
 /// <summary>
 /// Error Codes for the REST connector
@@ -38,6 +36,4 @@ public sealed record ErrorCodeREST : ErrorCodeBase
     /// Invalid Specification: '{0}'
     /// </summary>
     public static readonly ErrorCodeREST InvalidSpecification = new(nameof(InvalidSpecification));
-}
-
 }

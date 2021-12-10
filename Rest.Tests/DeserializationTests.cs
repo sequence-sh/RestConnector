@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -9,16 +7,11 @@ using MELT;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Reductech.EDR.ConnectorManagement.Base;
-using Reductech.EDR.Core;
-using Reductech.EDR.Core.Internal;
 using Reductech.EDR.Core.Internal.Serialization;
-using Reductech.EDR.Core.TestHarness;
-using Reductech.EDR.Core.Util;
 using RestSharp;
 using Xunit.Abstractions;
 
-namespace Reductech.EDR.Connectors.Rest.Tests
-{
+namespace Reductech.EDR.Connectors.Rest.Tests;
 
 public static class TestCaseExtensions
 {
@@ -148,6 +141,4 @@ public partial class DeserializationTests
                 );
         }
     }
-}
-
 }

@@ -1,20 +1,15 @@
-﻿using System.Collections.Generic;
-using System.IO.Abstractions;
+﻿using System.IO.Abstractions;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Divergic.Logging.Xunit;
 using FluentAssertions;
 using Reductech.EDR.ConnectorManagement.Base;
-using Reductech.EDR.Core;
 using Reductech.EDR.Core.Abstractions;
-using Reductech.EDR.Core.Internal;
 using Reductech.EDR.Core.Internal.Serialization;
-using Reductech.EDR.Core.TestHarness;
 using Xunit;
 
-namespace Reductech.EDR.Connectors.Rest.Tests
-{
+namespace Reductech.EDR.Connectors.Rest.Tests;
 
 [AutoTheory.UseTestOutputHelper]
 public partial class IntegrationTests
@@ -173,6 +168,4 @@ public partial class IntegrationTests
         result.ShouldBeSuccessful();
         result.Value.Dictionary.Keys.Should().Contain("Reveal_Cases_Get");
     }
-}
-
 }

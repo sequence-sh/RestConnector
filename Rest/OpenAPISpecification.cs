@@ -1,18 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO.Abstractions;
-using System.Linq;
-using CSharpFunctionalExtensions;
+﻿using System.IO.Abstractions;
 using Microsoft.OpenApi.Readers;
 using Reductech.EDR.Connectors.Rest.Errors;
-using Reductech.EDR.Core;
 using Reductech.EDR.Core.Abstractions;
-using Reductech.EDR.Core.Internal;
 using Reductech.EDR.Core.Internal.Errors;
 using RestSharp;
 
-namespace Reductech.EDR.Connectors.Rest
-{
+namespace Reductech.EDR.Connectors.Rest;
 
 /// <summary>
 /// An OpenAPI specification in the settings file
@@ -145,6 +138,4 @@ public record OpenAPISpecification(
 
         return factories;
     }
-}
-
 }
