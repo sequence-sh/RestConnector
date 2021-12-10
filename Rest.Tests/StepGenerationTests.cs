@@ -1,13 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Text.Json;
 using FluentAssertions;
 using Reductech.EDR.ConnectorManagement.Base;
-using Reductech.EDR.Core.Util;
 using Xunit;
 
-namespace Reductech.EDR.Connectors.Rest.Tests
-{
+namespace Reductech.EDR.Connectors.Rest.Tests;
 
 [AutoTheory.UseTestOutputHelper]
 public partial class StepGenerationTests
@@ -136,6 +133,4 @@ public partial class StepGenerationTests
 
         actualNames.Should().BeEquivalentTo(expectedNames);
     }
-}
-
 }

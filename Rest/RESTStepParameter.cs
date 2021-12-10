@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
+﻿using System.Collections.Immutable;
 using Microsoft.OpenApi.Models;
-using Reductech.EDR.Core;
-using Reductech.EDR.Core.Internal;
 
-namespace Reductech.EDR.Connectors.Rest
-{
+namespace Reductech.EDR.Connectors.Rest;
 
 /// <summary>
 /// A parameter to a REST step
@@ -64,6 +59,4 @@ public class RESTStepParameter : IRESTStepParameter
 
     /// <inheritdoc />
     public object? DefaultValue => Parameter.Schema.Default;
-}
-
 }

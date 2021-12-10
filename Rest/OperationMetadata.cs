@@ -1,9 +1,7 @@
-﻿using System.Linq;
-using System.Text;
+﻿using System.Text;
 using Microsoft.OpenApi.Models;
 
-namespace Reductech.EDR.Connectors.Rest
-{
+namespace Reductech.EDR.Connectors.Rest;
 
 /// <summary>
 /// Metadata for an API operation
@@ -58,6 +56,4 @@ public sealed record OperationMetadata(
             return sb.ToString();
         }
     }
-}
-
 }

@@ -1,22 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.Json;
+﻿using System.Text.Json;
 using System.Text.Json.Serialization;
-using CSharpFunctionalExtensions;
 using Microsoft.OpenApi.Models;
 using Reductech.EDR.Connectors.Rest.Errors;
-using Reductech.EDR.Core;
-using Reductech.EDR.Core.Attributes;
-using Reductech.EDR.Core.Entities;
-using Reductech.EDR.Core.Internal;
 using Reductech.EDR.Core.Internal.Errors;
 using Reductech.EDR.Core.Internal.Serialization;
-using Reductech.EDR.Core.Util;
-using Entity = Reductech.EDR.Core.Entity;
 
-namespace Reductech.EDR.Connectors.Rest
-{
+namespace Reductech.EDR.Connectors.Rest;
 
 /// <inheritdoc />
 public class RESTStepFactory : IStepFactory
@@ -338,6 +327,4 @@ public class RESTStepFactory : IStepFactory
 
         return entity;
     }
-}
-
 }

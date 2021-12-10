@@ -1,8 +1,6 @@
 ﻿using Microsoft.OpenApi.Models;
-using Reductech.EDR.Core.Internal;
 
-namespace Reductech.EDR.Connectors.Rest
-{
+namespace Reductech.EDR.Connectors.Rest;
 
 /// <summary>
 /// A parameter to a REST step
@@ -23,6 +21,4 @@ public interface IRESTStepParameter : IStepParameter
     /// The default Parameter value
     /// </summary>
     object? DefaultValue { get; }
-}
-
 }

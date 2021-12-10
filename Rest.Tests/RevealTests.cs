@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net;
+﻿using System.Net;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
@@ -8,18 +6,14 @@ using Divergic.Logging.Xunit;
 using FluentAssertions;
 using Moq;
 using Reductech.EDR.ConnectorManagement.Base;
-using Reductech.EDR.Core;
 using Reductech.EDR.Core.Abstractions;
 using Reductech.EDR.Core.ExternalProcesses;
-using Reductech.EDR.Core.Internal;
 using Reductech.EDR.Core.Internal.Serialization;
-using Reductech.EDR.Core.TestHarness;
 using RestSharp;
 using RestSharp.Serialization;
 using Xunit;
 
-namespace Reductech.EDR.Connectors.Rest.Tests
-{
+namespace Reductech.EDR.Connectors.Rest.Tests;
 
 [AutoTheory.UseTestOutputHelper]
 public partial class RevealTests
@@ -203,6 +197,4 @@ public partial class RevealTests
 
         result.ShouldBeSuccessful();
     }
-}
-
 }
