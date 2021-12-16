@@ -11,7 +11,7 @@ namespace Reductech.EDR.Connectors.Rest;
 /// A REST step that has been dynamically generated from an OpenAPI schema
 /// </summary>
 [NotAStaticStep]
-public sealed class RESTDynamicStep<T> : IStep<T>
+public sealed class RESTDynamicStep<T> : IStep<T> where T : ISCLObject
 {
     /// <summary>
     /// Create a new RestDynamicStep
@@ -154,8 +154,26 @@ public sealed class RESTDynamicStep<T> : IStep<T>
         return finalResult;
     }
 
+
     /// <inheritdoc />
-    public string Serialize()
+    public Task<Result<T1, IError>> Run<T1>(
+        IStateMonad stateMonad,
+        CancellationToken cancellationToken) where T1 : ISCLObject
+    {
+        return Run(stateMonad, cancellationToken)
+            .BindCast<T, T1, IError>(
+                ErrorCode.InvalidCast.ToErrorBuilder(typeof(T), typeof(T1)).WithLocation(this)
+            );
+    }
+
+    /// <inheritdoc />
+    public Task<Result<ISCLObject, IError>> RunUntyped(IStateMonad stateMonad, CancellationToken cancellationToken)
+    {
+        return Run(stateMonad, cancellationToken).Map(x=> x as ISCLObject);
+    }
+
+    /// <inheritdoc />
+    public string Serialize(SerializeOptions options)
     {
         var sb = new StringBuilder();
         sb.Append(Name);
@@ -167,7 +185,7 @@ public sealed class RESTDynamicStep<T> : IStep<T>
             sb.Append(parameter.Name);
             sb.Append(": ");
 
-            var value = step.Serialize();
+            var value = step.Serialize(options);
 
             sb.Append(value);
         }
@@ -176,20 +194,9 @@ public sealed class RESTDynamicStep<T> : IStep<T>
     }
 
     /// <inheritdoc />
-    public Task<Result<T1, IError>> Run<T1>(
-        IStateMonad stateMonad,
-        CancellationToken cancellationToken)
+    public Maybe<ISCLObject> TryGetConstantValue()
     {
-        return Run(stateMonad, cancellationToken)
-            .BindCast<T, T1, IError>(
-                ErrorCode.InvalidCast.ToErrorBuilder(typeof(T), typeof(T1)).WithLocation(this)
-            );
-    }
-
-    /// <inheritdoc />
-    public Maybe<EntityValue> TryConvertToEntityValue()
-    {
-        return Maybe<EntityValue>.None;
+        return Maybe<ISCLObject>.None;
     }
 
     /// <inheritdoc />
