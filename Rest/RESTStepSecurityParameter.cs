@@ -8,6 +8,9 @@ namespace Reductech.EDR.Connectors.Rest;
 /// </summary>
 public class RESTStepBodyParameter : IStepParameter
 {
+    /// <summary>
+    /// Create a new RESTStepBodyParameter
+    /// </summary>
     public RESTStepBodyParameter(OpenApiRequestBody requestBody) => RequestBody = requestBody;
 
     /// <summary>

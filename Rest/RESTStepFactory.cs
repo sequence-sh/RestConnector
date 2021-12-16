@@ -147,7 +147,7 @@ public class RESTStepFactory : IStepFactory
 
                     if (defaultValue is not null)
                     {
-                        var constantString = new StringConstant(defaultValue);
+                        var constantString = new SCLConstant<StringStream>(defaultValue);
                         allProperties.Add(new(constantString, stepParameter));
                     }
                     else

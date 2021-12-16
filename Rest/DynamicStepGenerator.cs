@@ -26,26 +26,24 @@ public class DynamicStepGenerator : IDynamicStepGenerator
             );
         }
 
-        var entityValue = EntityValue.CreateFromObject(valueObject);
+        var sclObject = ISCLObject.CreateFromCSharpObject(valueObject);
 
         var specifications = new List<OpenAPISpecification>();
 
-        if (entityValue is EntityValue.NestedEntity nestedEntity)
+        if (sclObject is Entity entity)
         {
             var r = EntityConversionHelpers.TryCreateFromEntity<OpenAPISpecification>(
-                nestedEntity.Value
+                entity
             );
 
             if (r.IsSuccess)
                 specifications.Add(r.Value);
         }
-        else if (entityValue is EntityValue.NestedList nestedList)
+        else if (sclObject is IArray array)
         {
-            foreach (var value in nestedList.Value.OfType<EntityValue.NestedEntity>())
+            foreach (var value in array.ListIfEvaluated().Value.OfType<Entity>())
             {
-                var r = EntityConversionHelpers.TryCreateFromEntity<OpenAPISpecification>(
-                    value.Value
-                );
+                var r = EntityConversionHelpers.TryCreateFromEntity<OpenAPISpecification>(value);
 
                 if (r.IsSuccess)
                     specifications.Add(r.Value);
