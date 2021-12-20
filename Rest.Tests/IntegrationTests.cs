@@ -4,12 +4,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using Divergic.Logging.Xunit;
 using FluentAssertions;
-using Reductech.EDR.ConnectorManagement.Base;
-using Reductech.EDR.Core.Abstractions;
-using Reductech.EDR.Core.Internal.Serialization;
+using Reductech.Sequence.ConnectorManagement.Base;
+using Reductech.Sequence.Core.Abstractions;
+using Reductech.Sequence.Core.Internal.Serialization;
 using Xunit;
 
-namespace Reductech.EDR.Connectors.Rest.Tests;
+namespace Reductech.Sequence.Connectors.Rest.Tests;
 
 [AutoTheory.UseTestOutputHelper]
 public partial class IntegrationTests
@@ -47,7 +47,7 @@ public partial class IntegrationTests
                     new ConnectorSettings()
                     {
                         Enable   = true,
-                        Id       = "Reductech.EDR.Connectors.Rest",
+                        Id       = "Reductech.Sequence.Connectors.Rest",
                         Settings = dictionary,
                         Version  = "1.0"
                     },
@@ -118,7 +118,7 @@ public partial class IntegrationTests
                     new ConnectorSettings()
                     {
                         Enable   = true,
-                        Id       = "Reductech.EDR.Connectors.Rest",
+                        Id       = "Reductech.Sequence.Connectors.Rest",
                         Settings = dictionary,
                         Version  = "1.0"
                     },
@@ -157,7 +157,7 @@ public partial class IntegrationTests
                     new ConnectorSettings()
                     {
                         Enable   = true,
-                        Id       = "Reductech.EDR.Connectors.Rest",
+                        Id       = "Reductech.Sequence.Connectors.Rest",
                         Settings = dictionary,
                         Version  = "1.0"
                     },

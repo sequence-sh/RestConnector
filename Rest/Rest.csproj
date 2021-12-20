@@ -4,23 +4,23 @@
     <TargetFramework>net6.0</TargetFramework>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <RootNamespace>Reductech.EDR.Connectors.Rest</RootNamespace>
-    <AssemblyName>Reductech.EDR.Connectors.Rest</AssemblyName>
+    <RootNamespace>Reductech.Sequence.Connectors.Rest</RootNamespace>
+    <AssemblyName>Reductech.Sequence.Connectors.Rest</AssemblyName>
     <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
     <Nullable>enable</Nullable>
     <Version>0.13.0$(VersionSuffix)</Version>
   </PropertyGroup>
 
   <PropertyGroup>
-    <PackageId>Reductech.EDR.Connectors.Rest</PackageId>
-    <Title>EDR Rest Connector</Title>
-    <Description>A class library for using Rest in EDR Sequences</Description>
-    <Product>EDR</Product>
-    <PackageTags>ediscovery;forensics;edrm;automation;orchestration</PackageTags>
+    <PackageId>Reductech.Sequence.Connectors.Rest</PackageId>
+    <Title>Sequence® Rest Connector</Title>
+    <Description>A class library for Sequence® to send REST queries. Steps are dynamically generated from OpenAPI schemas.</Description>
+    <Product>Sequence®</Product>
+    <PackageTags>ediscovery;forensics;edrm;automation;orchestration;sequence</PackageTags>
 
-    <PackageProjectUrl>https://gitlab.com/reductech/edr/connectors/rest</PackageProjectUrl>
-    <RepositoryUrl>https://gitlab.com/reductech/edr/connectors/rest.git</RepositoryUrl>
-    <PackageReleaseNotes>Please see https://gitlab.com/reductech/edr/connectors/rest/-/releases</PackageReleaseNotes>
+    <PackageProjectUrl>https://gitlab.com/reductech/sequence/connectors/rest</PackageProjectUrl>
+    <RepositoryUrl>https://gitlab.com/reductech/sequence/connectors/rest.git</RepositoryUrl>
+    <PackageReleaseNotes>Please see https://gitlab.com/reductech/sequence/connectors/rest/-/releases</PackageReleaseNotes>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
 
     <Authors>Reductech</Authors>
@@ -31,7 +31,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.OpenApi" Version="1.2.3" />
     <PackageReference Include="Microsoft.OpenApi.Readers" Version="1.2.3" />
-    <PackageReference Include="Reductech.EDR.Core" Version="0.13.0-a.main.2112200210">
+    <PackageReference Include="Reductech.Sequence.Core" Version="0.13.0-a.main.2112201532">
       <ExcludeAssets>runtime</ExcludeAssets>
     </PackageReference>
     <PackageReference Include="System.IO.Abstractions" Version="14.0.13" />

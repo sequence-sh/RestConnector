@@ -1,8 +1,8 @@
-﻿using Reductech.EDR.ConnectorManagement.Base;
-using Reductech.EDR.Core.Abstractions;
-using Reductech.EDR.Core.Internal.Errors;
+﻿using Reductech.Sequence.ConnectorManagement.Base;
+using Reductech.Sequence.Core.Abstractions;
+using Reductech.Sequence.Core.Internal.Errors;
 
-namespace Reductech.EDR.Connectors.Rest;
+namespace Reductech.Sequence.Connectors.Rest;
 
 /// <summary>
 /// Generates steps based on OpenAPI step definitions 
