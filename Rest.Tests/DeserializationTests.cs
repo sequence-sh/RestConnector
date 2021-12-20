@@ -6,12 +6,12 @@ using AutoTheory;
 using MELT;
 using Microsoft.Extensions.Logging;
 using Moq;
-using Reductech.EDR.ConnectorManagement.Base;
-using Reductech.EDR.Core.Internal.Serialization;
+using Reductech.Sequence.ConnectorManagement.Base;
+using Reductech.Sequence.Core.Internal.Serialization;
 using RestSharp;
 using Xunit.Abstractions;
 
-namespace Reductech.EDR.Connectors.Rest.Tests;
+namespace Reductech.Sequence.Connectors.Rest.Tests;
 
 public static class TestCaseExtensions
 {

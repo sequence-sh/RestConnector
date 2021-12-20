@@ -1,11 +1,11 @@
 ﻿using System.Text;
 using System.Text.Json;
 using Microsoft.OpenApi.Models;
-using Reductech.EDR.Core.Internal.Errors;
-using Reductech.EDR.Core.Steps.REST;
+using Reductech.Sequence.Core.Internal.Errors;
+using Reductech.Sequence.Core.Steps.REST;
 using RestSharp;
 
-namespace Reductech.EDR.Connectors.Rest;
+namespace Reductech.Sequence.Connectors.Rest;
 
 /// <summary>
 /// A REST step that has been dynamically generated from an OpenAPI schema

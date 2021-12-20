@@ -1,11 +1,11 @@
 ﻿using System.IO.Abstractions;
 using Microsoft.OpenApi.Readers;
-using Reductech.EDR.Connectors.Rest.Errors;
-using Reductech.EDR.Core.Abstractions;
-using Reductech.EDR.Core.Internal.Errors;
+using Reductech.Sequence.Connectors.Rest.Errors;
+using Reductech.Sequence.Core.Abstractions;
+using Reductech.Sequence.Core.Internal.Errors;
 using RestSharp;
 
-namespace Reductech.EDR.Connectors.Rest;
+namespace Reductech.Sequence.Connectors.Rest;
 
 /// <summary>
 /// An OpenAPI specification in the settings file

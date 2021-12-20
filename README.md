@@ -19,9 +19,9 @@ To check if a file exists and print the result:
 - Print (ConvertJsonToEntity '{"Foo":1}')
 ```
 
-### [Try Rest Connector](https://gitlab.com/reductech/edr/edr/-/releases)
+### [Try Rest Connector](https://gitlab.com/reductech/edr/console/-/releases)
 
-Using [EDR](https://gitlab.com/reductech/edr/edr),
+Using [EDR](https://gitlab.com/reductech/edr/console),
 the command line tool for running Sequences.
 
 ## Documentation
@@ -34,7 +34,7 @@ The PowerShell Connector is part of a group of projects called
 [E-discovery Reduct](https://gitlab.com/reductech/edr)
 which consists of a collection of [Connectors](https://gitlab.com/reductech/edr/connectors)
 and a command-line application for running Sequences, called
-[EDR](https://gitlab.com/reductech/edr/edr/-/releases).
+[EDR](https://gitlab.com/reductech/edr/console/-/releases).
 
 # Releases
 

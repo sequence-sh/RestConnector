@@ -1,10 +1,10 @@
 ﻿using System.Linq;
 using System.Text.Json;
 using FluentAssertions;
-using Reductech.EDR.ConnectorManagement.Base;
+using Reductech.Sequence.ConnectorManagement.Base;
 using Xunit;
 
-namespace Reductech.EDR.Connectors.Rest.Tests;
+namespace Reductech.Sequence.Connectors.Rest.Tests;
 
 [AutoTheory.UseTestOutputHelper]
 public partial class StepGenerationTests
@@ -66,7 +66,7 @@ public partial class StepGenerationTests
 
         var connectorSettings = new ConnectorSettings()
         {
-            Id      = "Reductech.EDR.Connectors.Rest",
+            Id      = "Reductech.Sequence.Connectors.Rest",
             Enable  = true,
             Version = "1.0",
             Settings = new Dictionary<string, object>()

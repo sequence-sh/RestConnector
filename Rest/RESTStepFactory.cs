@@ -1,11 +1,11 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.OpenApi.Models;
-using Reductech.EDR.Connectors.Rest.Errors;
-using Reductech.EDR.Core.Internal.Errors;
-using Reductech.EDR.Core.Internal.Serialization;
+using Reductech.Sequence.Connectors.Rest.Errors;
+using Reductech.Sequence.Core.Internal.Errors;
+using Reductech.Sequence.Core.Internal.Serialization;
 
-namespace Reductech.EDR.Connectors.Rest;
+namespace Reductech.Sequence.Connectors.Rest;
 
 /// <inheritdoc />
 public class RESTStepFactory : IStepFactory

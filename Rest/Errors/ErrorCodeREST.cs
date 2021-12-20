@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
-using Reductech.EDR.Core.Internal.Errors;
+using Reductech.Sequence.Core.Internal.Errors;
 
-namespace Reductech.EDR.Connectors.Rest.Errors;
+namespace Reductech.Sequence.Connectors.Rest.Errors;
 
 /// <summary>
 /// Error Codes for the REST connector
