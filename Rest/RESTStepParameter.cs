@@ -13,10 +13,110 @@ public class RESTStepParameter : IRESTStepParameter
     /// </summary>
     public RESTStepParameter(OpenApiParameter parameter)
     {
-        Parameter  = parameter;
-        ActualType = typeof(StringStream);
-        StepType   = typeof(IStep<>).MakeGenericType(ActualType);
+        Parameter = parameter;
+
+        ActualType = GetType(parameter.Schema);
+
+        StepType = typeof(IStep<>).MakeGenericType(ActualType);
     }
+
+    private static Type GetType(OpenApiSchema schema)
+    {
+        var schemaType   = schema.Type.ToLowerInvariant();
+        var schemaFormat = schema.Format?.ToLowerInvariant();
+
+        if (schemaType == "string")
+        {
+            if (schemaFormat is "date-time" or "date")
+                return typeof(SCLDateTime);
+
+            return typeof(StringStream);
+        }
+
+        if (schemaType == "double")
+            return typeof(SCLDouble);
+
+        if (schemaType == "null")
+            return typeof(SCLNull);
+
+        if (schemaType == "integer")
+        {
+            if (schema.Format == "int32")
+                return typeof(SCLInt);
+
+            if (schema.Format == "int64")
+                return typeof(SCLInt); //TODO long
+
+            return typeof(SCLInt);
+        }
+
+        if (schemaType == "boolean")
+            return typeof(SCLBool);
+
+        if (schemaType == "array")
+        {
+            var memberType = GetType(schema.Items);
+            return typeof(Array<>).MakeGenericType(memberType);
+        }
+
+        if (schemaType == "object")
+        {
+            return typeof(Entity);
+        }
+
+        throw new Exception(
+            $"Cannot get type from schema type: {schema.Type} and format: {schema.Format}"
+        );
+    }
+
+    //private static TypeReference GetType(OpenApiSchema schema)
+    //{
+    //    var schemaType   = schema.Type.ToLowerInvariant();
+    //    var schemaFormat = schema.Format.ToLowerInvariant();
+
+    //    if (schemaType == "string")
+    //    {
+    //        if (schemaFormat is "date-time" or "date")
+    //            return TypeReference.Actual.Date;
+
+    //        return TypeReference.Actual.String;
+    //    }
+
+    //    if (schemaType == "double")
+    //        return TypeReference.Actual.Double;
+
+    //    if (schemaType == "null")
+    //        return TypeReference.Actual.Null;
+
+    //    if (schemaType == "integer")
+    //    {
+    //        if (schema.Format == "int32")
+    //            return TypeReference.Actual.Integer;
+
+    //        if (schema.Format == "int64")
+    //            return TypeReference.Actual.Integer; //TODO long
+
+    //        return TypeReference.Actual.Integer;
+    //    }
+
+    //    if (schemaType == "boolean")
+    //        return TypeReference.Actual.Bool;
+
+    //    if (schemaType == "array")
+    //    {
+    //        var memberType = GetType(schema.Items);
+    //        return new TypeReference.Array(memberType);
+    //    }
+
+    //    if (schemaType == "object")
+    //    {
+    //        return TypeReference.Actual.Entity;
+    //    }
+
+    //    throw new Exception(
+    //        $"Cannot get type from schema type: {schema.Type} and format: {schema.Format}"
+    //    );
+    //}
 
     /// <summary>
     /// The OpenAPI parameter

@@ -13,17 +13,26 @@ public partial class StepGenerationTests
     [InlineData(
         nameof(SpecificationExamples.RevealJson),
         "RevealJson_Cases_Get",
-        "InControlAuthToken"
+        "InControlAuthToken",
+        "StringStream"
     )]
     [InlineData(
         nameof(SpecificationExamples.RevealJson),
         "RevealJson_Cases_Delete",
-        "id;InControlAuthToken"
+        "id;InControlAuthToken",
+        "SCLInt;StringStream"
+    )]
+    [InlineData(
+        nameof(SpecificationExamples.RevealJson),
+        "RevealJson_Tags_GetDocumentIds",
+        "caseId;userId;keyField;startRow;batchSize;name;ignoreAccessRights;InControlAuthToken",
+        "SCLInt;SCLInt;StringStream;SCLInt;SCLInt;StringStream;SCLBool;StringStream"
     )]
     public void TestCreateParameters(
         string specificationName,
         string stepName,
-        string expectedParameterNames)
+        string expectedParameterNames,
+        string expectedParameterTypes)
     {
         var specificationText = SpecificationExamples.ResourceManager.GetString(specificationName)!;
 
@@ -36,15 +45,19 @@ public partial class StepGenerationTests
 
         var expectedNames = expectedParameterNames.Split(';').ToHashSet();
         var actualNames   = new HashSet<string>();
+        var expectedTypes = expectedParameterTypes.Split(';').ToList();
+        var actualTypes   = new List<string>();
 
         var step = factories.Single(x => x.TypeName == stepName);
 
         foreach (var stepParameter in step.ParameterDictionary.Values.Distinct())
         {
             actualNames.Add(stepParameter.Name);
+            actualTypes.Add(stepParameter.ActualType.Name);
         }
 
         actualNames.Should().BeEquivalentTo(expectedNames);
+        actualTypes.Should().BeEquivalentTo(expectedTypes);
     }
 
     private const string ExpectedRevealSteps =
