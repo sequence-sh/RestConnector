@@ -30,6 +30,7 @@ public partial class IntegrationTests
                         "https://salient-eu.revealdata.com/rest",
                         specificationText,
                         null,
+                        null,
                         null
                     )
                 )
@@ -96,7 +97,8 @@ public partial class IntegrationTests
                         "http://test.com",
                         null,
                         null,
-                        @"C:\Users\wainw\source\repos\Reductech\rest\Rest.Tests\Resources\RevealJson.txt"
+                        @"C:\Users\wainw\source\repos\Reductech\rest\Rest.Tests\Resources\RevealJson.txt",
+                        null
                     )
                 )
             }
@@ -142,6 +144,7 @@ public partial class IntegrationTests
                         "http://test.com",
                         null,
                         "https://salient-eu.revealdata.com/rest/swagger/docs/V2",
+                        null,
                         null
                     )
                 )

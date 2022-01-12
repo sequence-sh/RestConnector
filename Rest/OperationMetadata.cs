@@ -13,7 +13,8 @@ public sealed record OperationMetadata(
     string ServerUrl,
     OpenApiPathItem PathItem,
     OpenApiOperation Operation,
-    OperationType OperationType)
+    OperationType OperationType,
+    IReadOnlyDictionary<string, string>? StepAliases)
 {
     /// <inheritdoc />
     public override string ToString()
@@ -35,25 +36,34 @@ public sealed record OperationMetadata(
             else
                 baseString = ServiceName + '_' + Path + '_' + OperationType;
 
-            var sb = new StringBuilder();
+            var result = ReplaceCharacters(baseString);
 
-            var previousWasUnderscore = true;
+            if (StepAliases is not null && StepAliases.TryGetValue(result, out var newValue))
+                result = newValue;
 
-            foreach (var c in baseString)
+            return result;
+
+            static string ReplaceCharacters(string s)
             {
-                if (char.IsLetterOrDigit(c))
-                {
-                    sb.Append(c);
-                    previousWasUnderscore = false;
-                }
-                else if (!previousWasUnderscore)
-                {
-                    sb.Append('_');
-                    previousWasUnderscore = true;
-                }
-            }
+                var sb                    = new StringBuilder();
+                var previousWasUnderscore = true;
 
-            return sb.ToString();
+                foreach (var c in s)
+                {
+                    if (char.IsLetterOrDigit(c))
+                    {
+                        sb.Append(c);
+                        previousWasUnderscore = false;
+                    }
+                    else if (!previousWasUnderscore)
+                    {
+                        sb.Append('_');
+                        previousWasUnderscore = true;
+                    }
+                }
+
+                return sb.ToString();
+            }
         }
     }
 }

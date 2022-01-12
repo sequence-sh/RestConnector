@@ -39,7 +39,8 @@ public partial class StepGenerationTests
         var factories = OpenAPISpecification.CreateStepFactories(
                 specificationName,
                 "http://baseURL",
-                specificationText
+                specificationText,
+                null
             )
             .GetOrThrow();
 
@@ -120,19 +121,29 @@ public partial class StepGenerationTests
         actualNames.Should().BeEquivalentTo(expectedNames);
     }
 
+    private IReadOnlyDictionary<string, string> _stepAliasesDictionary =>
+        new Dictionary<string, string>() { { "ExampleJson_users_Get", "RenamedStep" } };
+
     [Theory]
-    [InlineData(nameof(SpecificationExamples.Example),      "Example_users_Get")]
-    [InlineData(nameof(SpecificationExamples.ExampleJson),  "ExampleJson_users_Get")]
-    [InlineData(nameof(SpecificationExamples.RevealJson),   ExpectedRevealSteps)]
-    [InlineData(nameof(SpecificationExamples.Orchestrator), ExpectedOrchestratorStep)]
-    public void TestFactoryNames(string specificationName, string expectedNamesString)
+    [InlineData(nameof(SpecificationExamples.Example),      "Example_users_Get",      true)]
+    [InlineData(nameof(SpecificationExamples.ExampleJson),  "ExampleJson_users_Get",  false)]
+    [InlineData(nameof(SpecificationExamples.ExampleJson),  "RenamedStep",            true)]
+    [InlineData(nameof(SpecificationExamples.RevealJson),   ExpectedRevealSteps,      true)]
+    [InlineData(nameof(SpecificationExamples.Orchestrator), ExpectedOrchestratorStep, true)]
+    public void TestFactoryNames(
+        string specificationName,
+        string expectedNamesString,
+        bool useStepAliases)
     {
         var specificationText = SpecificationExamples.ResourceManager.GetString(specificationName)!;
 
         var factories = OpenAPISpecification.CreateStepFactories(
                 specificationName,
                 "http://baseURL",
-                specificationText
+                specificationText,
+                useStepAliases
+                    ? _stepAliasesDictionary
+                    : null
             )
             .GetOrThrow();
 
