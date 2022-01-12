@@ -15,13 +15,24 @@ public record OpenAPISpecification(
     string BaseURL,
     string? Specification,
     string? SpecificationURL,
-    string? SpecificationFilePath)
+    string? SpecificationFilePath,
+    Dictionary<string, string>? StepAliases)
 {
     /// <summary>
     /// Tries to get the Specification from the settings object
     /// </summary>
     public Result<IReadOnlyList<IStepFactory>, IErrorBuilder> TryGetStepFactories(
         IExternalContext externalContext)
+    {
+        var specificationText = GetSpecificationText(externalContext);
+
+        if (specificationText.IsFailure)
+            return specificationText.ConvertFailure<IReadOnlyList<IStepFactory>>();
+
+        return CreateStepFactories(Name, BaseURL, specificationText.Value, StepAliases);
+    }
+
+    private Result<string, IErrorBuilder> GetSpecificationText(IExternalContext externalContext)
     {
         var setFields = 0;
 
@@ -67,7 +78,7 @@ public record OpenAPISpecification(
                 externalContext.TryGetContext<IFileSystem>(ConnectorInjection.FileSystemKey);
 
             if (fileSystemResult.IsFailure)
-                return fileSystemResult.ConvertFailure<IReadOnlyList<IStepFactory>>();
+                return fileSystemResult.ConvertFailure<string>();
 
             try
             {
@@ -80,7 +91,7 @@ public record OpenAPISpecification(
             }
         }
 
-        return CreateStepFactories(Name, BaseURL, specificationText);
+        return specificationText;
     }
 
     /// <summary>
@@ -89,7 +100,8 @@ public record OpenAPISpecification(
     public static Result<IReadOnlyList<IStepFactory>, IErrorBuilder> CreateStepFactories(
         string specificationName,
         string specificationBaseUrl,
-        string specificationText)
+        string specificationText,
+        IReadOnlyDictionary<string, string>? stepAliases)
     {
         var stream = new StringStream(specificationText);
 
@@ -130,10 +142,13 @@ public record OpenAPISpecification(
                 specificationBaseUrl,
                 pathItem,
                 openApiOperation,
-                operationType
+                operationType,
+                stepAliases
             );
 
-            factories.Add(new RESTStepFactory(metadata));
+            var factory = new RESTStepFactory(metadata);
+
+            factories.Add(factory);
         }
 
         return factories;

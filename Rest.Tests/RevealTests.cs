@@ -32,6 +32,7 @@ public partial class RevealTests
                         "http://test.com",
                         specificationText,
                         null,
+                        null,
                         null
                     )
                 )
@@ -122,6 +123,7 @@ public partial class RevealTests
                         "Reveal",
                         "http://test.com",
                         specificationText,
+                        null,
                         null,
                         null
                     )
