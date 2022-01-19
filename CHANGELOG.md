@@ -1,5 +1,26 @@
 # v0.13.0 (2022-01-16)
 
+EDR is now Sequence. The following has changed:
+
+- The GitLab group has moved to https://gitlab.com/reductech/sequence
+- The root namespace is now `Reductech.Sequence`
+- The documentation site has moved to https://sequence.sh
+
+Everything else is still the same - automation, simplified.
+
+The project has now been updated to use .NET 6.
+
+## Summary of Changes
+
+It's now possible to define aliases for steps in the REST connector
+configuration. For example:
+
+```json
+"Aliases" : {
+  "Document_Post" : "GetDocument"
+}
+```
+
 ## Issues Closed in this Release
 
 ### New Features
@@ -10,7 +31,8 @@
 ### Maintenance
 
 - Rename EDR to Sequence #19
-- Update Core to latest version #16
+- Update Core to support SCLObject types #16
+- Upgrade to use .net 6 #15
 
 # v0.12.0 (2021-11-26)
 
