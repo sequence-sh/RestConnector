@@ -3,21 +3,37 @@
 [Sequence®](https://gitlab.com/reductech/sequence) is a collection of
 libraries that automates cross-application e-discovery and forensic workflows.
 
-This connector contains Steps to interact with...
+EDR REST Connector
+The EDR REST Connector allows users to connect to REST services.
 
-## Steps
+This connector works by generating steps from an OpenAPI specification defined in the configuration.
 
-|         Step          | Description                                    | Result Type |
-| :-------------------: | :--------------------------------------------- | :---------: |
-| `ConvertJsonToEntity` | Converts a JSON string or stream to an entity. |  `Entity`   |
+  "reductech-scl.edr.connectors": {
+    "Reductech.EDR.Connectors.Rest": {
+      "Id": "Reductech.EDR.Connectors.Rest",
+      "Version": "0.12.0",
+      "Settings": {
+        "Specifications": [{
+            "Name": "Examples",
+            "BaseURL": "http://baseURL",
+            "SpecificationURL": "https://raw.githubusercontent.com/OAI/OpenAPI-Specification/main/examples/v3.0/api-with-examples.json"
+          }]
+      }
+    }
+  },
+Each Specification has the following properties
 
-## Examples
+Name	Required	Type	Description
+Name	✔	string	The name of the Specification
+BaseURL	✔	string	The base url to send queries to
+Specification		string	Text of the OpenAPI specification to use
+SpecificationURL		string	Url of the Specification to use
+SpecificationFilePath		string	File path of the Specification to use
+Exactly one of Specification, SpecificationURL, and SpecificationFilePath must be set.
 
-To check if a file exists and print the result:
+Each operation in the specification will map onto its own step. The name of the step will be the Specification name concatenated with the OperationId separated by an underscore. Each operation parameter will map to a Step parameter. Each security definition will map to a Step parameter.
 
-```scala
-- Print (ConvertJsonToEntity '{"Foo":1}')
-```
+SCL examples available [here](https://docs.reductech.io/edr/examples/rest.html).
 
 # Releases
 
