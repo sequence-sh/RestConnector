@@ -8,7 +8,7 @@ The REST Connector allows users to connect to REST services.
 
 This connector works by generating steps from an OpenAPI specification defined in the configuration.
 
-```scala
+```json
   "reductech-scl.sequence.connectors": {
     "Reductech.Sequence.Connectors.Rest": {
       "Id": "Reductech.Sequence.Connectors.Rest",
