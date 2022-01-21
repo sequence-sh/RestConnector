@@ -1,40 +1,45 @@
-# EDR Rest Connector
+# Sequence® Rest Connector
 
-[Reductech EDR](https://gitlab.com/reductech/edr) is a collection of
+[Sequence®](https://gitlab.com/reductech/sequence) is a collection of
 libraries that automates cross-application e-discovery and forensic workflows.
 
-This connector contains Steps to interact with...
 
-## Steps
+The REST Connector allows users to connect to REST services.
 
-|         Step          | Description                                    | Result Type |
-| :-------------------: | :--------------------------------------------- | :---------: |
-| `ConvertJsonToEntity` | Converts a JSON string or stream to an entity. |  `Entity`   |
+This connector works by generating steps from an OpenAPI specification defined in the configuration.
 
-## Examples
-
-To check if a file exists and print the result:
-
-```scala
-- Print (ConvertJsonToEntity '{"Foo":1}')
+```json
+  "reductech-scl.sequence.connectors": {
+    "Reductech.Sequence.Connectors.Rest": {
+      "Id": "Reductech.Sequence.Connectors.Rest",
+      "Version": "0.13.0",
+      "Settings": {
+        "Specifications": [{
+            "Name": "Examples",
+            "BaseURL": "http://baseURL",
+            "SpecificationURL": "https://raw.githubusercontent.com/OAI/OpenAPI-Specification/main/examples/v3.0/api-with-examples.json"
+          }]
+      }
+    }
+  }
 ```
 
-### [Try Rest Connector](https://gitlab.com/reductech/edr/console/-/releases)
+Each Specification has the following properties
 
-Using [EDR](https://gitlab.com/reductech/edr/console),
-the command line tool for running Sequences.
+| Name                  | Required | Type     | Description                              |
+| --------------------- | -------- | -------- | ---------------------------------------- |
+| Name                  | ✔        | `string` | The name of the Specification            |
+| BaseURL               | ✔        | `string` | The base url to send queries to          |
+| Specification         |          | `string` | Text of the OpenAPI specification to use |
+| SpecificationURL      |          | `string` | Url of the Specification to use          |
+| SpecificationFilePath |          | `string` | File path of the Specification to use.   |
 
-## Documentation
+Exactly one of Specification, SpecificationURL, and SpecificationFilePath must be set.
 
-Documentation is available here: https://docs.reductech.io
+Each operation in the specification will map onto its own step. The name of the step will be the Specification name concatenated with the OperationId separated by an underscore. Each operation parameter will map to a Step parameter. Each security definition will map to a Step parameter.
 
-## E-discovery Reduct
+SCL examples available [here](https://docs.reductech.io/edr/examples/rest.html).
 
-The PowerShell Connector is part of a group of projects called
-[E-discovery Reduct](https://gitlab.com/reductech/edr)
-which consists of a collection of [Connectors](https://gitlab.com/reductech/edr/connectors)
-and a command-line application for running Sequences, called
-[EDR](https://gitlab.com/reductech/edr/console/-/releases).
 
 # Releases
 
