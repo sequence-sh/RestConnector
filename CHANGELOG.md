@@ -30,6 +30,7 @@ configuration. For example:
 
 ### Maintenance
 
+- Update license file and add notice #27
 - Rename EDR to Sequence #19
 - Update Core to support SCLObject types #16
 - Upgrade to use .net 6 #15
@@ -59,5 +60,3 @@ Initial release. Version numbers are aligned with [Core](https://gitlab.com/redu
 ### Other
 
 - Create more tests for REST connector #5
-
-
