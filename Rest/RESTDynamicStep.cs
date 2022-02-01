@@ -1,7 +1,9 @@
-﻿using System.Text;
+﻿using System.Collections.Immutable;
+using System.Text;
 using System.Text.Json;
 using Microsoft.OpenApi.Models;
 using Reductech.Sequence.Core.Internal.Errors;
+using Reductech.Sequence.Core.Internal.Serialization;
 using Reductech.Sequence.Core.Steps.REST;
 using RestSharp;
 
@@ -154,7 +156,6 @@ public sealed class RESTDynamicStep<T> : IStep<T> where T : ISCLObject
         return finalResult;
     }
 
-
     /// <inheritdoc />
     public Task<Result<T1, IError>> Run<T1>(
         IStateMonad stateMonad,
@@ -167,9 +168,11 @@ public sealed class RESTDynamicStep<T> : IStep<T> where T : ISCLObject
     }
 
     /// <inheritdoc />
-    public Task<Result<ISCLObject, IError>> RunUntyped(IStateMonad stateMonad, CancellationToken cancellationToken)
+    public Task<Result<ISCLObject, IError>> RunUntyped(
+        IStateMonad stateMonad,
+        CancellationToken cancellationToken)
     {
-        return Run(stateMonad, cancellationToken).Map(x=> x as ISCLObject);
+        return Run(stateMonad, cancellationToken).Map(x => x as ISCLObject);
     }
 
     /// <inheritdoc />
@@ -191,6 +194,35 @@ public sealed class RESTDynamicStep<T> : IStep<T> where T : ISCLObject
         }
 
         return sb.ToString();
+    }
+
+    /// <inheritdoc />
+    public void Format(
+        IndentationStringBuilder indentationStringBuilder,
+        FormattingOptions options,
+        Stack<Comment> remainingComments)
+    {
+        var serializer = new FunctionSerializer(Name);
+
+        IEnumerable<StepProperty> stepProperties
+            = AllParameters.Select(
+                (x, i) =>
+                    new StepProperty.SingleStepProperty(
+                        x.step,
+                        x.restStepParameter.ParameterName,
+                        i,
+                        null,
+                        ImmutableList<RequirementAttribute>.Empty
+                    )
+            );
+
+        serializer.Format(
+            stepProperties,
+            TextLocation,
+            indentationStringBuilder,
+            options,
+            remainingComments
+        );
     }
 
     /// <inheritdoc />
