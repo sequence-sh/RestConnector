@@ -92,6 +92,8 @@ public partial class DeserializationTests
         /// <inheritdoc />
         public ExternalContextSetupHelper ExternalContextSetupHelper { get; } = new();
 
+        public Dictionary<VariableName, ISCLObject> InjectedVariables { get; } = new();
+
         /// <inheritdoc />
         public RESTClientSetupHelper RESTClientSetupHelper { get; } = new();
 
