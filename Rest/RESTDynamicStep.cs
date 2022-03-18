@@ -68,8 +68,8 @@ public sealed class RESTDynamicStep<T> : IStep<T> where T : ISCLObject
 
         foreach (var (step, restStepParameter) in AllParameters)
         {
-            var r = await step.Run<StringStream>(stateMonad, cancellationToken)
-                .Map(x => x.GetStringAsync());
+            var r = await step.RunUntyped(stateMonad, cancellationToken)
+                .Map(x => x.Serialize(SerializeOptions.Primitive));
 
             if (r.IsFailure)
                 errors.Add(r.Error);
