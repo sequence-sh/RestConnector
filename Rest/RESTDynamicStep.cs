@@ -68,8 +68,8 @@ public sealed class RESTDynamicStep<T> : IStep<T> where T : ISCLObject
 
         foreach (var (step, restStepParameter) in AllParameters)
         {
-            var r = await step.Run<StringStream>(stateMonad, cancellationToken)
-                .Map(x => x.GetStringAsync());
+            var r = await step.RunUntyped(stateMonad, cancellationToken)
+                .Map(x => x.Serialize(SerializeOptions.Primitive));
 
             if (r.IsFailure)
                 errors.Add(r.Error);
@@ -209,7 +209,7 @@ public sealed class RESTDynamicStep<T> : IStep<T> where T : ISCLObject
                 (x, i) =>
                     new StepProperty.SingleStepProperty(
                         x.step,
-                        x.restStepParameter.ParameterName,
+                        x.restStepParameter,
                         i,
                         null,
                         ImmutableList<RequirementAttribute>.Empty
@@ -226,12 +226,6 @@ public sealed class RESTDynamicStep<T> : IStep<T> where T : ISCLObject
     }
 
     /// <inheritdoc />
-    public Maybe<ISCLObject> TryGetConstantValue()
-    {
-        return Maybe<ISCLObject>.None;
-    }
-
-    /// <inheritdoc />
     public bool ShouldBracketWhenSerialized => true;
 
     /// <inheritdoc />
@@ -243,6 +237,29 @@ public sealed class RESTDynamicStep<T> : IStep<T> where T : ISCLObject
         get
         {
             yield break;
+        }
+    }
+
+    /// <inheritdoc />
+    public bool HasConstantValue(IEnumerable<VariableName> providedVariables) => false;
+
+    /// <inheritdoc />
+    public Task<Maybe<ISCLObject>> TryGetConstantValueAsync(
+        IReadOnlyDictionary<VariableName, ISCLObject> variableValues,
+        StepFactoryStore sfs)
+    {
+        return Task.FromResult(Maybe<ISCLObject>.None);
+    }
+
+    /// <inheritdoc />
+    public IEnumerable<(IStep Step, IStepParameter Parameter, IStep Value)> GetParameterValues()
+    {
+        foreach (var (nestedStep, parameter) in this.AllParameters)
+        {
+            yield return (this, parameter, nestedStep);
+
+            foreach (var parameterValue in nestedStep.GetParameterValues())
+                yield return parameterValue;
         }
     }
 }

@@ -44,6 +44,10 @@ public class RESTStepBodyParameter : IStepParameter
 
     /// <inheritdoc />
     public MemberType MemberType => MemberType.Step;
+
+    /// <inheritdoc />
+    public IReadOnlyDictionary<string, string> Metadata =>
+        ImmutableDictionary<string, string>.Empty;
 }
 
 /// <summary>
@@ -98,4 +102,8 @@ public class RESTStepSecurityParameter : IRESTStepParameter
 
     /// <inheritdoc />
     public object? DefaultValue => "";
+
+    /// <inheritdoc />
+    public IReadOnlyDictionary<string, string> Metadata =>
+        ImmutableDictionary<string, string>.Empty;
 }

@@ -91,6 +91,16 @@ public class RESTStepFactory : IStepFactory
     }
 
     /// <inheritdoc />
+    public UnitResult<IError> CheckFreezePossible(
+        CallerMetadata callerMetadata,
+        TypeResolver typeResolver,
+        FreezableStepData freezeData)
+    {
+        var r = TryFreeze(callerMetadata, typeResolver, freezeData); //TODO maybe improve this
+        return r;
+    }
+
+    /// <inheritdoc />
     public Result<IStep, IError> TryFreeze(
         CallerMetadata callerMetadata,
         TypeResolver typeResolver,
@@ -138,8 +148,8 @@ public class RESTStepFactory : IStepFactory
 
                     if (frozenStep.IsFailure)
                         errors.Add(frozenStep.Error);
-
-                    allProperties.Add(new(frozenStep.Value, stepParameter));
+                    else
+                        allProperties.Add(new(frozenStep.Value, stepParameter));
                 }
                 else if (stepParameter.Required)
                 {

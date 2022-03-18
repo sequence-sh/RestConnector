@@ -97,7 +97,7 @@ public partial class RevealTests
             );
 
         var result = await runner.RunSequenceFromTextAsync(
-            "- AssertEqual ('a': 1) (Reveal_WorkFolder_Create caseId: '159' InControlAuthToken: '456' userId: '789' body: (name: 'myNewFolder'))",
+            "- AssertEqual ('a': 1) (Reveal_WorkFolder_Create caseId: 159 InControlAuthToken: '456' userId: 789 body: (name: 'myNewFolder'))",
             new Dictionary<string, object>(),
             CancellationToken.None
         );
