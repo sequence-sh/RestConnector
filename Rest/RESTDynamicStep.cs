@@ -4,7 +4,6 @@ using System.Text.Json;
 using Microsoft.OpenApi.Models;
 using Reductech.Sequence.Core.Internal.Errors;
 using Reductech.Sequence.Core.Internal.Serialization;
-using Reductech.Sequence.Core.Steps.REST;
 using RestSharp;
 
 namespace Reductech.Sequence.Connectors.Rest;

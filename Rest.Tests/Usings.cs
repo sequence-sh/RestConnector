@@ -5,4 +5,7 @@ global using Reductech.Sequence.Core.Internal;
 global using Reductech.Sequence.Core.Util;
 global using Reductech.Sequence.Core.TestHarness;
 global using Reductech.Sequence.Core.Internal.Errors;
+global using RestSharp;
 global using static Reductech.Sequence.Core.TestHarness.StaticHelpers;
+global using Reductech.Sequence.Connectors.Rest.Steps;
+global using System.Net;

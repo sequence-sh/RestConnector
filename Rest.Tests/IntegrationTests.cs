@@ -2,12 +2,14 @@
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
+using CSharpFunctionalExtensions;
 using Divergic.Logging.Xunit;
 using FluentAssertions;
 using Reductech.Sequence.ConnectorManagement.Base;
 using Reductech.Sequence.Core.Abstractions;
 using Reductech.Sequence.Core.Internal.Serialization;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace Reductech.Sequence.Connectors.Rest.Tests;
 
@@ -17,25 +19,29 @@ public partial class IntegrationTests
     public const string Skip = "skip";
 
     [Fact(Skip = Skip)]
-    public async Task TestRevealPOSTSequence()
+    public async Task TestGetStream()
     {
-        var specificationText = SpecificationExamples.RevealJson;
+        var scl = "log (RestGetStream 'https://en.wikipedia.org/' 'wiki/Tokyo')";
+        var r   = await RunSCL(scl, null, TestOutputHelper);
 
-        var dictionary = new Dictionary<string, object>()
-        {
-            {
-                DynamicStepGenerator.SpecificationsKey, EntityConversionHelpers.ConvertToEntity(
-                    new OpenAPISpecification(
-                        "Reveal",
-                        "https://salient-eu.revealdata.com/rest",
-                        specificationText,
-                        null,
-                        null,
-                        null
-                    )
-                )
-            }
-        };
+        r.ShouldBeSuccessful();
+    }
+
+    private static async Task<Result<Unit, IError>> RunSCL(
+        string scl,
+        OpenAPISpecification? specification,
+        ITestOutputHelper testOutputHelper)
+    {
+        var dictionary =
+            specification is null
+                ? new Dictionary<string, object>()
+                : new Dictionary<string, object>()
+                {
+                    {
+                        DynamicStepGenerator.SpecificationsKey,
+                        EntityConversionHelpers.ConvertToEntity(specification)
+                    }
+                };
 
         var externalContext = ExternalContext.Default;
 
@@ -57,12 +63,34 @@ public partial class IntegrationTests
             );
 
         stepFactoryResult.ShouldBeSuccessful();
-        stepFactoryResult.Value.Dictionary.Keys.Should().Contain("Reveal_Cases_Get");
 
         var runner = new SCLRunner(
-            new TestOutputLogger("Test", TestOutputHelper),
+            new TestOutputLogger("Test", testOutputHelper),
             stepFactoryResult.Value,
             externalContext
+        );
+
+        var result = await runner.RunSequenceFromTextAsync(
+            scl,
+            new Dictionary<string, object>(),
+            CancellationToken.None
+        );
+
+        return result;
+    }
+
+    [Fact(Skip = Skip)]
+    public async Task TestRevealPOSTSequence()
+    {
+        var specificationText = SpecificationExamples.RevealJson;
+
+        var spec = new OpenAPISpecification(
+            "Reveal",
+            "https://salient-eu.revealdata.com/rest",
+            specificationText,
+            null,
+            null,
+            null
         );
 
         var scl =
@@ -76,11 +104,7 @@ public partial class IntegrationTests
 
 - <folderCreateResult> = (Reveal_WorkFolder_Create Body: <folderBody> caseId: <caseId> InControlAuthToken: <LoginSessionId> userId: <userId>)";
 
-        var result = await runner.RunSequenceFromTextAsync(
-            scl,
-            new Dictionary<string, object>(),
-            CancellationToken.None
-        );
+        var result = await RunSCL(scl, spec, TestOutputHelper);
 
         result.ShouldBeSuccessful();
     }
