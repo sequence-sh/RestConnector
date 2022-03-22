@@ -4,7 +4,6 @@ using System.Text.Json;
 using Microsoft.OpenApi.Models;
 using Reductech.Sequence.Core.Internal.Errors;
 using Reductech.Sequence.Core.Internal.Serialization;
-using Reductech.Sequence.Core.Steps.REST;
 using RestSharp;
 
 namespace Reductech.Sequence.Connectors.Rest;
@@ -82,17 +81,18 @@ public sealed class RESTDynamicStep<T> : IStep<T> where T : ISCLObject
 
         var method = OperationMetadata.OperationType switch
         {
-            OperationType.Get => Method.GET,
-            OperationType.Put => Method.PUT,
-            OperationType.Post => Method.POST,
-            OperationType.Delete => Method.DELETE,
-            OperationType.Options => Method.OPTIONS,
-            OperationType.Head => Method.HEAD,
-            OperationType.Patch => Method.PATCH,
+            OperationType.Get     => Method.Get,
+            OperationType.Put     => Method.Put,
+            OperationType.Post    => Method.Post,
+            OperationType.Delete  => Method.Delete,
+            OperationType.Options => Method.Options,
+            OperationType.Head    => Method.Head,
+            OperationType.Patch   => Method.Patch,
+            //TODO handle trace
             _ => throw new ArgumentOutOfRangeException(OperationMetadata.OperationType.ToString())
         };
 
-        IRestRequest request = new RestRequest(OperationMetadata.Path, method);
+        var request = new RestRequest(OperationMetadata.Path, method);
 
         var restClient =
             stateMonad.ExternalContext.RestClientFactory.CreateRestClient(
@@ -116,11 +116,11 @@ public sealed class RESTDynamicStep<T> : IStep<T> where T : ISCLObject
         {
             var parameterType = parameter.ParameterLocation switch
             {
-                ParameterLocation.Query => ParameterType.QueryString,
+                ParameterLocation.Query  => ParameterType.QueryString,
                 ParameterLocation.Header => ParameterType.HttpHeader,
-                ParameterLocation.Path => ParameterType.UrlSegment,
-                ParameterLocation.Cookie => ParameterType.Cookie,
-                null => ParameterType.Cookie,
+                ParameterLocation.Path   => ParameterType.UrlSegment,
+                //ParameterLocation.Cookie => ParameterType.Cookie, //TODO handle cookie https://restsharp.dev/v107/#headers
+                null => ParameterType.HttpHeader,
                 _ => throw new ArgumentOutOfRangeException(parameter.ParameterLocation?.ToString())
             };
 

@@ -9,8 +9,8 @@ using Reductech.Sequence.ConnectorManagement.Base;
 using Reductech.Sequence.Core.Abstractions;
 using Reductech.Sequence.Core.ExternalProcesses;
 using Reductech.Sequence.Core.Internal.Serialization;
+using Reductech.Sequence.Core.TestHarness.Rest;
 using RestSharp;
-using RestSharp.Serialization;
 using Xunit;
 
 namespace Reductech.Sequence.Connectors.Rest.Tests;
@@ -41,11 +41,27 @@ public partial class RevealTests
 
         var mockRepo = new MockRepository(MockBehavior.Strict);
 
-        var restClientMock = mockRepo.Create<IRestClient>();
+        var setupHelper = new RESTClientSetupHelper();
+
+        setupHelper.GetRESTClientFactory(mockRepo);
+
+        setupHelper.AddHttpTestAction(
+            new RESTSetup(
+                "http://test.com",
+                x => CheckPostRequest(x),
+                new RestResponse()
+                {
+                    Content        = "{\"a\": 1}",
+                    ResponseStatus = ResponseStatus.Completed,
+                    StatusCode     = HttpStatusCode.Created,
+                    IsSuccessful   = true
+                }
+            )
+        );
 
         var externalContext = new ExternalContext(
             mockRepo.OneOf<IExternalProcessRunner>(),
-            new SingleRestClientFactory(restClientMock.Object),
+            setupHelper.GetRESTClientFactory(mockRepo),
             mockRepo.OneOf<IConsole>()
         );
 
@@ -75,27 +91,6 @@ public partial class RevealTests
             externalContext
         );
 
-        var uri = new Uri("http://test.com/");
-        restClientMock.SetupSet(x => x.BaseUrl = uri);
-
-        restClientMock.Setup(x => x.UseSerializer(It.IsAny<Func<IRestSerializer>>()))
-            .Returns(restClientMock.Object);
-
-        restClientMock.Setup(
-                rc => rc.ExecuteAsync(
-                    It.Is<IRestRequest>((rr) => CheckPostRequest(rr)),
-                    It.IsAny<CancellationToken>()
-                )
-            )
-            .ReturnsAsync(
-                new RestResponse()
-                {
-                    Content        = "{\"a\": 1}",
-                    ResponseStatus = ResponseStatus.Completed,
-                    StatusCode     = HttpStatusCode.Created
-                }
-            );
-
         var result = await runner.RunSequenceFromTextAsync(
             "- AssertEqual ('a': 1) (Reveal_WorkFolder_Create caseId: 159 InControlAuthToken: '456' userId: 789 body: (name: 'myNewFolder'))",
             new Dictionary<string, object>(),
@@ -105,9 +100,9 @@ public partial class RevealTests
         result.ShouldBeSuccessful();
     }
 
-    static bool CheckPostRequest(IRestRequest restRequest)
+    static bool CheckPostRequest(RestRequest restRequest)
     {
-        return restRequest.Method == Method.POST && restRequest.Parameters.Count == 4;
+        return restRequest.Method == Method.Post && restRequest.Parameters.Count == 4;
     }
 
     [Fact]
@@ -133,11 +128,25 @@ public partial class RevealTests
 
         var mockRepo = new MockRepository(MockBehavior.Strict);
 
-        var restClientMock = mockRepo.Create<IRestClient>();
+        var setupHelper = new RESTClientSetupHelper();
+
+        setupHelper.AddHttpTestAction(
+            new RESTSetup(
+                "http://test.com",
+                rc => rc.Method == Method.Get && rc.Parameters.Count == 1,
+                new RestResponse()
+                {
+                    Content        = "{\"a\": 1}",
+                    ResponseStatus = ResponseStatus.Completed,
+                    StatusCode     = HttpStatusCode.Created,
+                    IsSuccessful   = true
+                }
+            )
+        );
 
         var externalContext = new ExternalContext(
             mockRepo.OneOf<IExternalProcessRunner>(),
-            new SingleRestClientFactory(restClientMock.Object),
+            setupHelper.GetRESTClientFactory(mockRepo),
             mockRepo.OneOf<IConsole>()
         );
 
@@ -166,30 +175,6 @@ public partial class RevealTests
             stepFactoryResult.Value,
             externalContext
         );
-
-        var uri = new Uri("http://test.com/");
-        restClientMock.SetupSet(x => x.BaseUrl = uri);
-
-        restClientMock.Setup(x => x.UseSerializer(It.IsAny<Func<IRestSerializer>>()))
-            .Returns(restClientMock.Object);
-
-        restClientMock.Setup(
-                rc => rc.ExecuteAsync(
-                    It.Is<IRestRequest>(
-                        rr =>
-                            rr.Method == Method.GET && rr.Parameters.Count == 1
-                    ),
-                    It.IsAny<CancellationToken>()
-                )
-            )
-            .ReturnsAsync(
-                new RestResponse()
-                {
-                    Content        = "{\"a\": 1}",
-                    ResponseStatus = ResponseStatus.Completed,
-                    StatusCode     = HttpStatusCode.Created
-                }
-            );
 
         var result = await runner.RunSequenceFromTextAsync(
             "- AssertEqual ('a': 1) (Reveal_Cases_Get InControlAuthToken: '456')",

@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using Reductech.Sequence.ConnectorManagement.Base;
 using Reductech.Sequence.Core.Internal.Serialization;
+using Reductech.Sequence.Core.TestHarness.Rest;
 using RestSharp;
 using Xunit.Abstractions;
 
@@ -50,9 +51,9 @@ public partial class DeserializationTests
             connectorSettings.Settings = ConnectorSettingsDict;
             var connectorData = new ConnectorData(connectorSettings, assembly);
 
-            var repository        = new MockRepository(MockBehavior.Strict);
-            var restClient        = RESTClientSetupHelper.GetRESTClient(repository, FinalChecks);
-            var restClientFactory = new SingleRestClientFactory(restClient);
+            var repository = new MockRepository(MockBehavior.Strict);
+
+            var restClientFactory = RESTClientSetupHelper.GetRESTClientFactory(repository);
 
             var externalContext =
                 ExternalContextSetupHelper.GetExternalContext(repository, restClientFactory);
@@ -138,7 +139,8 @@ public partial class DeserializationTests
                 )
                 .SetupHTTPSuccess(
                     "http://orchestrator.com",
-                    ("/api/v1.0/Bags/123", Method.GET, null),
+                    ("/api/v1.0/Bags/123", Method.Get, null),
+                    true,
                     HttpStatusCode.OK,
                     "{\"a\": 1}"
                 );

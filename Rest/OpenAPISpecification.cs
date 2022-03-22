@@ -24,7 +24,7 @@ public record OpenAPISpecification(
     public Result<IReadOnlyList<IStepFactory>, IErrorBuilder> TryGetStepFactories(
         IExternalContext externalContext)
     {
-        var specificationText = GetSpecificationText(externalContext);
+        var specificationText = GetSpecificationText(externalContext).Result; //TODO call async
 
         if (specificationText.IsFailure)
             return specificationText.ConvertFailure<IReadOnlyList<IStepFactory>>();
@@ -32,7 +32,8 @@ public record OpenAPISpecification(
         return CreateStepFactories(Name, BaseURL, specificationText.Value, StepAliases);
     }
 
-    private Result<string, IErrorBuilder> GetSpecificationText(IExternalContext externalContext)
+    private async Task<Result<string, IErrorBuilder>> GetSpecificationText(
+        IExternalContext externalContext)
     {
         var setFields = 0;
 
@@ -61,15 +62,15 @@ public record OpenAPISpecification(
         else if (!string.IsNullOrWhiteSpace(SpecificationURL))
         {
             var restClient = externalContext.RestClientFactory.CreateRestClient(SpecificationURL);
-            var request    = new RestRequest("", Method.GET);
+            var request    = new RestRequest("");
 
-            var response = restClient.Execute(request);
+            var response = await restClient.ExecuteAsync(request, CancellationToken.None);
 
-            if (response.IsSuccessful)
+            if (response.IsSuccessful && !string.IsNullOrWhiteSpace(response.Content))
                 specificationText = response.Content;
             else
                 return ErrorCodeREST.CouldNotLoadSpecification.ToErrorBuilder(
-                    response.ErrorMessage
+                    response.ErrorMessage ?? "Rest Error"
                 );
         }
         else
@@ -82,7 +83,8 @@ public record OpenAPISpecification(
 
             try
             {
-                specificationText = fileSystemResult.Value.File.ReadAllText(SpecificationFilePath);
+                specificationText =
+                    await fileSystemResult.Value.File.ReadAllTextAsync(SpecificationFilePath);
             }
             catch (Exception e)
             {
