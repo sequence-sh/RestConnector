@@ -1,3 +1,17 @@
+# v0.14.0 (2022-03-25)
+
+## Summary of Changes
+
+### Steps
+
+- RESTDelete, RESTGetJson, RESTGetStream, RESTPatch, RESTPost, RESTPut have been moved into the REST connector from Core
+
+## Issues Closed in this Release
+
+### New Features
+
+- Move Rest Steps from Core into Rest Connector #45
+
 # v0.13.0 (2022-01-16)
 
 EDR is now Sequence. The following has changed:
@@ -60,3 +74,4 @@ Initial release. Version numbers are aligned with [Core](https://gitlab.com/redu
 ### Other
 
 - Create more tests for REST connector #5
+
