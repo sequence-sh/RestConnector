@@ -20,18 +20,18 @@
 
     <PackageProjectUrl>https://gitlab.com/reductech/sequence/connectors/rest</PackageProjectUrl>
     <RepositoryUrl>https://gitlab.com/reductech/sequence/connectors/rest.git</RepositoryUrl>
-    <PackageReleaseNotes>Please see https://gitlab.com/reductech/sequence/connectors/rest/-/releases</PackageReleaseNotes>
+    <PackageReleaseNotes>https://gitlab.com/reductech/sequence/connectors/rest/-/blob/main/CHANGELOG.md</PackageReleaseNotes>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
 
     <Authors>Reductech</Authors>
     <Company>Reductech</Company>
-    <Copyright>Copyright (c) 2021 Reductech Ltd</Copyright>
+    <Copyright>Copyright (c) 2022 Reductech Ltd</Copyright>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.OpenApi" Version="1.2.3" />
     <PackageReference Include="Microsoft.OpenApi.Readers" Version="1.2.3" />
-    <PackageReference Include="Reductech.Sequence.Core" Version="0.14.0-a.main.2203231647">
+    <PackageReference Include="Reductech.Sequence.Core" Version="0.14.0">
       <ExcludeAssets>runtime</ExcludeAssets>
     </PackageReference>
     <PackageReference Include="System.IO.Abstractions" Version="14.0.13" />
