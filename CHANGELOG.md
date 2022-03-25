@@ -4,7 +4,14 @@
 
 ### Steps
 
-- RESTDelete, RESTGetJson, RESTGetStream, RESTPatch, RESTPost, RESTPut have been moved into the REST connector from Core
+The following steps have been moved from Core:
+
+- RESTDelete
+- RESTGetJson
+- RESTGetStream
+- RESTPatch
+- RESTPost
+- RESTPut
 
 ## Issues Closed in this Release
 

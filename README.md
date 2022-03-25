@@ -3,8 +3,7 @@
 [Sequence®](https://gitlab.com/reductech/sequence) is a collection of
 libraries that automates cross-application e-discovery and forensic workflows.
 
-
-The REST Connector allows users to connect to REST services.
+The REST Connector enables users to interact with REST services in sequences.
 
 This connector works by generating steps from an OpenAPI specification defined in the configuration.
 
@@ -38,8 +37,11 @@ Exactly one of Specification, SpecificationURL, and SpecificationFilePath must b
 
 Each operation in the specification will map onto its own step. The name of the step will be the Specification name concatenated with the OperationId separated by an underscore. Each operation parameter will map to a Step parameter. Each security definition will map to a Step parameter.
 
-SCL examples available [here](https://docs.reductech.io/edr/examples/rest.html).
+SCL examples available [here](https://sequence.sh/docs/examples/connectors/rest/).
 
+# Documentation
+
+Documentation available at https://sequence.sh
 
 # Releases
 
