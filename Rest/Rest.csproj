@@ -8,7 +8,7 @@
     <AssemblyName>Reductech.Sequence.Connectors.Rest</AssemblyName>
     <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
     <Nullable>enable</Nullable>
-    <Version>0.14.0$(VersionSuffix)</Version>
+    <Version>0.15.0$(VersionSuffix)</Version>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -31,7 +31,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.OpenApi" Version="1.2.3" />
     <PackageReference Include="Microsoft.OpenApi.Readers" Version="1.2.3" />
-    <PackageReference Include="Reductech.Sequence.Core" Version="0.14.0">
+    <PackageReference Include="Reductech.Sequence.Core" Version="0.15.0-a.main.2203251716">
       <ExcludeAssets>runtime</ExcludeAssets>
     </PackageReference>
     <PackageReference Include="System.IO.Abstractions" Version="14.0.13" />
