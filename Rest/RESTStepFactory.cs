@@ -72,9 +72,9 @@ public class RESTStepFactory : IStepFactory
     {
         return operationType switch
         {
-            OperationType.Get    => TypeReference.Actual.Entity,
+            OperationType.Get    => TypeReference.Entity.NoSchema, //TODO supply schema here
             OperationType.Put    => TypeReference.Unit.Instance,
-            OperationType.Post   => TypeReference.Actual.Entity,
+            OperationType.Post   => TypeReference.Entity.NoSchema,
             OperationType.Delete => TypeReference.Unit.Instance,
             OperationType.Patch  => TypeReference.Unit.Instance,
             _                    => null
@@ -107,7 +107,7 @@ public class RESTStepFactory : IStepFactory
         FreezableStepData freezeData)
     {
         var typeReference = GetTypeReference(OperationMetadata.OperationType)
-                         ?? TypeReference.Actual.Entity;
+                         ?? TypeReference.Entity.NoSchema;
 
         if (!callerMetadata.ExpectedType.Allow(typeReference, typeResolver))
             return Result.Failure<IStep, IError>(
@@ -179,7 +179,7 @@ public class RESTStepFactory : IStepFactory
                     var nestedCallerMetadata = new CallerMetadata(
                         TypeName,
                         bodyParameter1.Name,
-                        TypeReference.Actual.Entity
+                        TypeReference.Entity.NoSchema
                     );
 
                     var frozenStep =
@@ -217,7 +217,7 @@ public class RESTStepFactory : IStepFactory
             return Result.Failure<IStep, IError>(ErrorList.Combine(errors));
         }
 
-        if (typeReference == TypeReference.Actual.Entity)
+        if (typeReference is TypeReference.Entity)
         {
             return new RESTDynamicStep<Entity>(
                 OperationMetadata,
