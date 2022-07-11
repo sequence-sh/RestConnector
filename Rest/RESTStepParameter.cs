@@ -17,7 +17,8 @@ public class RESTStepParameter : IRESTStepParameter
 
         ActualType = GetType(parameter.Schema);
 
-        StepType = typeof(IStep<>).MakeGenericType(ActualType);
+        StepType          = typeof(IStep<>).MakeGenericType(ActualType);
+        StepTypeReference = TypeReference.Create(ActualType);
     }
 
     private static Type GetType(OpenApiSchema schema)
@@ -79,6 +80,9 @@ public class RESTStepParameter : IRESTStepParameter
 
     /// <inheritdoc />
     public Type StepType { get; }
+
+    /// <inheritdoc />
+    public TypeReference StepTypeReference { get; }
 
     /// <inheritdoc />
     public Type ActualType { get; }
