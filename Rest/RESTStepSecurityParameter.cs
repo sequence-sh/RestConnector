@@ -11,7 +11,10 @@ public class RESTStepBodyParameter : IStepParameter
     /// <summary>
     /// Create a new RESTStepBodyParameter
     /// </summary>
-    public RESTStepBodyParameter(OpenApiRequestBody requestBody) => RequestBody = requestBody;
+    public RESTStepBodyParameter(OpenApiRequestBody requestBody)
+    {
+        RequestBody = requestBody;
+    }
 
     /// <summary>
     /// The Request Body
@@ -23,6 +26,10 @@ public class RESTStepBodyParameter : IStepParameter
 
     /// <inheritdoc />
     public Type StepType { get; } = typeof(IStep<>).MakeGenericType(typeof(Entity));
+
+    /// <inheritdoc />
+    public TypeReference StepTypeReference { get; } =
+        TypeReference.Entity.NoSchema; //TODO use a schema
 
     /// <inheritdoc />
     public Type ActualType { get; } = typeof(Entity);
@@ -71,6 +78,9 @@ public class RESTStepSecurityParameter : IRESTStepParameter
 
     /// <inheritdoc />
     public Type StepType { get; } = typeof(IStep<>).MakeGenericType(typeof(StringStream));
+
+    /// <inheritdoc />
+    public TypeReference StepTypeReference => TypeReference.Actual.String;
 
     /// <inheritdoc />
     public Type ActualType { get; } = typeof(StringStream);
