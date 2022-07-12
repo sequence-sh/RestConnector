@@ -1,3 +1,7 @@
+# v0.16.0 (2022-07-13)
+
+Maintenance release - dependency updates only.
+
 # v0.15.0 (2022-05-27)
 
 Maintenance release - dependency updates only.
@@ -85,5 +89,6 @@ Initial release. Version numbers are aligned with [Core](https://gitlab.com/redu
 ### Other
 
 - Create more tests for REST connector #5
+
 
 
