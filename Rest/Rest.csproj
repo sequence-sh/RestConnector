@@ -13,33 +13,53 @@
 
   <PropertyGroup>
     <PackageId>Reductech.Sequence.Connectors.Rest</PackageId>
-    <Title>Sequence® Rest Connector</Title>
-    <Description>A class library for Sequence® to send REST queries. Steps are dynamically generated from OpenAPI schemas.</Description>
+    <Title>Sequence® REST Connector</Title>
+    <Description>Sequence connector for REST APIs. Steps are dynamically generated from OpenAPI schemas.</Description>
     <Product>Sequence®</Product>
-    <PackageTags>ediscovery;forensics;edrm;automation;orchestration;sequence</PackageTags>
+    <PackageTags>ediscovery;forensics;edrm;automation;orchestration;sequence;api;rest;openapi;</PackageTags>
 
-    <PackageProjectUrl>https://gitlab.com/reductech/sequence/connectors/rest</PackageProjectUrl>
+    <PackageProjectUrl>https://sequence.sh</PackageProjectUrl>
     <RepositoryUrl>https://gitlab.com/reductech/sequence/connectors/rest.git</RepositoryUrl>
     <PackageReleaseNotes>https://gitlab.com/reductech/sequence/connectors/rest/-/blob/main/CHANGELOG.md</PackageReleaseNotes>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
 
     <Authors>Reductech</Authors>
     <Company>Reductech</Company>
     <Copyright>Copyright (c) 2022 Reductech Ltd</Copyright>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(CI)' != ''">
+    <!-- deterministic builds for Source Link -->
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!-- Source Link and symbols -->
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="../CHANGELOG.md" Pack="true" PackagePath="/" />
+    <None Include="../LICENSE" Pack="true" PackagePath="/" />
+    <None Include="../NOTICE" Pack="true" PackagePath="/" />
+    <None Include="../README.md" Pack="true" PackagePath="/" />
+  </ItemGroup>
+
   <ItemGroup>
     <PackageReference Include="Microsoft.OpenApi" Version="1.3.2" />
     <PackageReference Include="Microsoft.OpenApi.Readers" Version="1.3.2" />
-    <PackageReference Include="Reductech.Sequence.Core" Version="0.16.0-a.main.2207111038">
+    <PackageReference Include="Microsoft.SourceLink.GitLab" Version="1.1.1">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Reductech.Sequence.Core" Version="0.16.0">
       <ExcludeAssets>runtime</ExcludeAssets>
     </PackageReference>
     <PackageReference Include="System.IO.Abstractions" Version="14.0.13" />
-  </ItemGroup>
-
-  <ItemGroup Condition="$(PackConnector) != ''">
-    <None Include="..\README.md" Pack="true" PackagePath="\" />
-    <None Include="..\LICENSE" Pack="true" PackagePath="\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -59,7 +79,6 @@
 
   <PropertyGroup Condition="$(PackConnector) != ''">
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageLicenseExpression></PackageLicenseExpression>
   </PropertyGroup>
