@@ -51,10 +51,10 @@ public partial class RevealTests
                 x => CheckPostRequest(x),
                 new RestResponse()
                 {
-                    Content        = "{\"a\": 1}",
-                    ResponseStatus = ResponseStatus.Completed,
-                    StatusCode     = HttpStatusCode.Created,
-                    IsSuccessful   = true
+                    Content             = "{\"a\": 1}",
+                    ResponseStatus      = ResponseStatus.Completed,
+                    StatusCode          = HttpStatusCode.Created,
+                    IsSuccessStatusCode = true
                 }
             )
         );
@@ -136,10 +136,10 @@ public partial class RevealTests
                 rc => rc.Method == Method.Get && rc.Parameters.Count == 1,
                 new RestResponse()
                 {
-                    Content        = "{\"a\": 1}",
-                    ResponseStatus = ResponseStatus.Completed,
-                    StatusCode     = HttpStatusCode.Created,
-                    IsSuccessful   = true
+                    Content             = "{\"a\": 1}",
+                    ResponseStatus      = ResponseStatus.Completed,
+                    StatusCode          = HttpStatusCode.Created,
+                    IsSuccessStatusCode = true
                 }
             )
         );
