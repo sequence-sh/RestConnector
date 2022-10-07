@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoTheory;
@@ -9,7 +8,6 @@ using Moq;
 using Reductech.Sequence.ConnectorManagement.Base;
 using Reductech.Sequence.Core.Internal.Serialization;
 using Reductech.Sequence.Core.TestHarness.Rest;
-using RestSharp;
 using Xunit.Abstractions;
 
 namespace Reductech.Sequence.Connectors.Rest.Tests;
@@ -93,7 +91,7 @@ public partial class DeserializationTests
         /// <inheritdoc />
         public ExternalContextSetupHelper ExternalContextSetupHelper { get; } = new();
 
-        public Dictionary<VariableName, ISCLObject> InjectedVariables { get; } = new();
+        public Dictionary<VariableName, InjectedVariable> InjectedVariables { get; } = new();
 
         /// <inheritdoc />
         public RESTClientSetupHelper RESTClientSetupHelper { get; } = new();
