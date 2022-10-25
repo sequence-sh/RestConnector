@@ -5,6 +5,7 @@ using Microsoft.OpenApi.Models;
 using Reductech.Sequence.Core.Internal.Errors;
 using Reductech.Sequence.Core.Internal.Serialization;
 using RestSharp;
+using CSharpFunctionalExtensions.ValueTasks;
 
 namespace Reductech.Sequence.Connectors.Rest;
 
@@ -30,6 +31,11 @@ public sealed class RESTDynamicStep<T> : IStep<T> where T : ISCLObject
         BodyParameter     = bodyParameter;
         TextLocation      = textLocation;
     }
+
+    /// <inheritdoc />
+    public IStep FoldIfConstant(
+        StepFactoryStore sfs,
+        IReadOnlyDictionary<VariableName, InjectedVariable> injectedVariables) => this;
 
     /// <inheritdoc />
     public string Name => OperationMetadata.Name;
@@ -58,7 +64,7 @@ public sealed class RESTDynamicStep<T> : IStep<T> where T : ISCLObject
     public Func<string, Result<T, IErrorBuilder>> ConvertResultFunc { get; }
 
     /// <inheritdoc />
-    public async Task<Result<T, IError>> Run(
+    public async ValueTask<Result<T, IError>> Run(
         IStateMonad stateMonad,
         CancellationToken cancellationToken)
     {
@@ -157,7 +163,7 @@ public sealed class RESTDynamicStep<T> : IStep<T> where T : ISCLObject
     }
 
     /// <inheritdoc />
-    public Task<Result<T1, IError>> Run<T1>(
+    public ValueTask<Result<T1, IError>> Run<T1>(
         IStateMonad stateMonad,
         CancellationToken cancellationToken) where T1 : ISCLObject
     {
@@ -168,7 +174,7 @@ public sealed class RESTDynamicStep<T> : IStep<T> where T : ISCLObject
     }
 
     /// <inheritdoc />
-    public Task<Result<ISCLObject, IError>> RunUntyped(
+    public ValueTask<Result<ISCLObject, IError>> RunUntyped(
         IStateMonad stateMonad,
         CancellationToken cancellationToken)
     {
@@ -244,11 +250,11 @@ public sealed class RESTDynamicStep<T> : IStep<T> where T : ISCLObject
     public bool HasConstantValue(IEnumerable<VariableName> providedVariables) => false;
 
     /// <inheritdoc />
-    public Task<Maybe<ISCLObject>> TryGetConstantValueAsync(
+    public ValueTask<Maybe<ISCLObject>> TryGetConstantValueAsync(
         IReadOnlyDictionary<VariableName, ISCLObject> variableValues,
         StepFactoryStore sfs)
     {
-        return Task.FromResult(Maybe<ISCLObject>.None);
+        return ValueTask.FromResult(Maybe<ISCLObject>.None);
     }
 
     /// <inheritdoc />

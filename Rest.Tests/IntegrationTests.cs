@@ -94,7 +94,7 @@ public partial class IntegrationTests
         );
 
         var scl =
-            @"- <caseId> = '159'
+            @"- <caseId> = 159
 - <folderBody> = (""Name"": ""MyTestFolder"")
 
 
