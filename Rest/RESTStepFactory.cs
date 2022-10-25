@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Collections.Immutable;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.OpenApi.Models;
 using Reductech.Sequence.Connectors.Rest.Errors;
@@ -96,7 +97,17 @@ public class RESTStepFactory : IStepFactory
         TypeResolver typeResolver,
         FreezableStepData freezeData)
     {
-        var r = TryFreeze(callerMetadata, typeResolver, freezeData); //TODO maybe improve this
+        var r = TryFreeze(
+            callerMetadata,
+            typeResolver,
+            freezeData,
+            new OptimizationSettings(
+                true,
+                true,
+                ImmutableDictionary<VariableName, InjectedVariable>.Empty
+            )
+        ); //TODO maybe improve this
+
         return r;
     }
 
@@ -104,7 +115,8 @@ public class RESTStepFactory : IStepFactory
     public Result<IStep, IError> TryFreeze(
         CallerMetadata callerMetadata,
         TypeResolver typeResolver,
-        FreezableStepData freezeData)
+        FreezableStepData freezeData,
+        OptimizationSettings optimizationSettings)
     {
         var typeReference = GetTypeReference(OperationMetadata.OperationType)
                          ?? TypeReference.Entity.NoSchema;
@@ -144,7 +156,8 @@ public class RESTStepFactory : IStepFactory
                     );
 
                     var frozenStep =
-                        value.ConvertToStep().TryFreeze(nestedCallerMetadata, typeResolver);
+                        value.ConvertToStep()
+                            .TryFreeze(nestedCallerMetadata, typeResolver, optimizationSettings);
 
                     if (frozenStep.IsFailure)
                         errors.Add(frozenStep.Error);
@@ -183,7 +196,8 @@ public class RESTStepFactory : IStepFactory
                     );
 
                     var frozenStep =
-                        value.ConvertToStep().TryFreeze(nestedCallerMetadata, typeResolver);
+                        value.ConvertToStep()
+                            .TryFreeze(nestedCallerMetadata, typeResolver, optimizationSettings);
 
                     if (frozenStep.IsFailure)
                         errors.Add(frozenStep.Error);
@@ -312,7 +326,7 @@ public class RESTStepFactory : IStepFactory
     /// </summary>
     public static Result<Entity, IErrorBuilder> TryDeserializeToEntity(string jsonString)
     {
-        Entity? entity;
+        Entity entity;
 
         try
         {
@@ -332,9 +346,9 @@ public class RESTStepFactory : IStepFactory
             return ErrorCode.Unknown.ToErrorBuilder(e.Message);
         }
 
-        if (entity is null)
-            return ErrorCode.CouldNotParse.ToErrorBuilder(jsonString, "JSON");
+        //if (entity is null)
+        //    return ErrorCode.CouldNotParse.ToErrorBuilder(jsonString, "JSON");
 
-        return entity;
+        return Result.Success<Entity, IErrorBuilder>(entity);
     }
 }

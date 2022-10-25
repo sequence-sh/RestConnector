@@ -15,7 +15,7 @@ public abstract class RESTStep<TOutput> : CompoundStep<TOutput> where TOutput : 
     public abstract Method Method { get; }
 
     /// <inheritdoc />
-    protected override async Task<Result<TOutput, IError>> Run(
+    protected override async ValueTask<Result<TOutput, IError>> Run(
         IStateMonad stateMonad,
         CancellationToken cancellationToken)
     {
@@ -117,7 +117,7 @@ public abstract class RESTStep<TOutput> : CompoundStep<TOutput> where TOutput : 
     /// </summary>
     public static Result<Entity, IErrorBuilder> TryDeserializeToEntity(string jsonString)
     {
-        Entity? entity;
+        Entity entity;
 
         try
         {
@@ -128,8 +128,8 @@ public abstract class RESTStep<TOutput> : CompoundStep<TOutput> where TOutput : 
             return ErrorCode.Unknown.ToErrorBuilder(e.Message);
         }
 
-        if (entity is null)
-            return ErrorCode.CouldNotParse.ToErrorBuilder(jsonString, "JSON");
+        //if (entity is null)
+        //    return ErrorCode.CouldNotParse.ToErrorBuilder(jsonString, "JSON");
 
         return entity;
     }
