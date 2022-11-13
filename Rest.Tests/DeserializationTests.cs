@@ -5,12 +5,12 @@ using AutoTheory;
 using MELT;
 using Microsoft.Extensions.Logging;
 using Moq;
-using Reductech.Sequence.ConnectorManagement.Base;
-using Reductech.Sequence.Core.Internal.Serialization;
-using Reductech.Sequence.Core.TestHarness.Rest;
+using Sequence.ConnectorManagement.Base;
+using Sequence.Core.Internal.Serialization;
+using Sequence.Core.TestHarness.Rest;
 using Xunit.Abstractions;
 
-namespace Reductech.Sequence.Connectors.Rest.Tests;
+namespace Sequence.Connectors.Rest.Tests;
 
 public static class TestCaseExtensions
 {

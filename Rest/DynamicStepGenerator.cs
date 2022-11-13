@@ -1,8 +1,8 @@
-﻿using Reductech.Sequence.ConnectorManagement.Base;
-using Reductech.Sequence.Core.Abstractions;
-using Reductech.Sequence.Core.Internal.Errors;
+﻿using Sequence.ConnectorManagement.Base;
+using Sequence.Core.Abstractions;
+using Sequence.Core.Internal.Errors;
 
-namespace Reductech.Sequence.Connectors.Rest;
+namespace Sequence.Connectors.Rest;
 
 /// <summary>
 /// Generates steps based on OpenAPI step definitions 

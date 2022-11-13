@@ -1,6 +1,6 @@
 ﻿using Microsoft.OpenApi.Models;
 
-namespace Reductech.Sequence.Connectors.Rest;
+namespace Sequence.Connectors.Rest;
 
 /// <summary>
 /// A parameter to a REST step

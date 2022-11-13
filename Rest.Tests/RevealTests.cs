@@ -5,15 +5,15 @@ using System.Threading.Tasks;
 using Divergic.Logging.Xunit;
 using FluentAssertions;
 using Moq;
-using Reductech.Sequence.ConnectorManagement.Base;
-using Reductech.Sequence.Core.Abstractions;
-using Reductech.Sequence.Core.ExternalProcesses;
-using Reductech.Sequence.Core.Internal.Serialization;
-using Reductech.Sequence.Core.TestHarness.Rest;
+using Sequence.ConnectorManagement.Base;
+using Sequence.Core.Abstractions;
+using Sequence.Core.ExternalProcesses;
+using Sequence.Core.Internal.Serialization;
+using Sequence.Core.TestHarness.Rest;
 using RestSharp;
 using Xunit;
 
-namespace Reductech.Sequence.Connectors.Rest.Tests;
+namespace Sequence.Connectors.Rest.Tests;
 
 [AutoTheory.UseTestOutputHelper]
 public partial class RevealTests
@@ -74,7 +74,7 @@ public partial class RevealTests
                     new ConnectorSettings()
                     {
                         Enable   = true,
-                        Id       = "Reductech.Sequence.Connectors.Rest",
+                        Id       = "Sequence.Connectors.Rest",
                         Settings = dictionary,
                         Version  = "1.0"
                     },
@@ -159,7 +159,7 @@ public partial class RevealTests
                     new ConnectorSettings()
                     {
                         Enable   = true,
-                        Id       = "Reductech.Sequence.Connectors.Rest",
+                        Id       = "Sequence.Connectors.Rest",
                         Settings = dictionary,
                         Version  = "1.0"
                     },

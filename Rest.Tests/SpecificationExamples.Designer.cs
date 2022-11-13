@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Reductech.Sequence.Connectors.Rest.Tests {
+namespace Sequence.Connectors.Rest.Tests {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Reductech.Sequence.Connectors.Rest.Tests {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Reductech.Sequence.Connectors.Rest.Tests.SpecificationExamples", typeof(SpecificationExamples).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Sequence.Connectors.Rest.Tests.SpecificationExamples", typeof(SpecificationExamples).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -110,7 +110,7 @@ namespace Reductech.Sequence.Connectors.Rest.Tests {
         ///   Looks up a localized string similar to {
         ///  &quot;openapi&quot;: &quot;3.0.1&quot;,
         ///  &quot;info&quot;: {
-        ///    &quot;title&quot;: &quot;Reductech.EDR.Orchestrator.ClientAPI&quot;,
+        ///    &quot;title&quot;: &quot;Reductech.Orchestrator.ClientAPI&quot;,
         ///    &quot;version&quot;: &quot;1.0&quot;
         ///  },
         ///  &quot;paths&quot;: {

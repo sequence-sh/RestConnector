@@ -1,11 +1,11 @@
 ﻿using System.IO.Abstractions;
 using Microsoft.OpenApi.Readers;
-using Reductech.Sequence.Connectors.Rest.Errors;
-using Reductech.Sequence.Core.Abstractions;
-using Reductech.Sequence.Core.Internal.Errors;
+using Sequence.Connectors.Rest.Errors;
+using Sequence.Core.Abstractions;
+using Sequence.Core.Internal.Errors;
 using RestSharp;
 
-namespace Reductech.Sequence.Connectors.Rest;
+namespace Sequence.Connectors.Rest;
 
 /// <summary>
 /// An OpenAPI specification in the settings file

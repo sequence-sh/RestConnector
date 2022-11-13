@@ -2,12 +2,12 @@
 using System.Text;
 using System.Text.Json;
 using Microsoft.OpenApi.Models;
-using Reductech.Sequence.Core.Internal.Errors;
-using Reductech.Sequence.Core.Internal.Serialization;
+using Sequence.Core.Internal.Errors;
+using Sequence.Core.Internal.Serialization;
 using RestSharp;
 using CSharpFunctionalExtensions.ValueTasks;
 
-namespace Reductech.Sequence.Connectors.Rest;
+namespace Sequence.Connectors.Rest;
 
 /// <summary>
 /// A REST step that has been dynamically generated from an OpenAPI schema

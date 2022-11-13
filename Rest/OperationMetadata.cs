@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using Microsoft.OpenApi.Models;
 
-namespace Reductech.Sequence.Connectors.Rest;
+namespace Sequence.Connectors.Rest;
 
 /// <summary>
 /// Metadata for an API operation

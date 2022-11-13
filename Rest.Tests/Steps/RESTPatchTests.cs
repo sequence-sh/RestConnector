@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace Reductech.Sequence.Connectors.Rest.Tests.Steps;
+namespace Sequence.Connectors.Rest.Tests.Steps;
 
 public partial class RESTPatchTests : StepTestBase<RESTPatch, Unit>
 {
