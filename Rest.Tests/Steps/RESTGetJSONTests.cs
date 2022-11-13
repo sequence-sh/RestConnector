@@ -1,8 +1,8 @@
 ﻿using System.Net;
-using Reductech.Sequence.Connectors.Rest.Steps;
+using Sequence.Connectors.Rest.Steps;
 using RestSharp;
 
-namespace Reductech.Sequence.Connectors.Rest.Tests.Steps;
+namespace Sequence.Connectors.Rest.Tests.Steps;
 
 public partial class RESTGetJSONTests : StepTestBase<RESTGetJSON, Entity>
 {

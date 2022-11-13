@@ -5,13 +5,13 @@ using System.Threading.Tasks;
 using CSharpFunctionalExtensions;
 using Divergic.Logging.Xunit;
 using FluentAssertions;
-using Reductech.Sequence.ConnectorManagement.Base;
-using Reductech.Sequence.Core.Abstractions;
-using Reductech.Sequence.Core.Internal.Serialization;
+using Sequence.ConnectorManagement.Base;
+using Sequence.Core.Abstractions;
+using Sequence.Core.Internal.Serialization;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace Reductech.Sequence.Connectors.Rest.Tests;
+namespace Sequence.Connectors.Rest.Tests;
 
 [AutoTheory.UseTestOutputHelper]
 public partial class IntegrationTests
@@ -54,7 +54,7 @@ public partial class IntegrationTests
                     new ConnectorSettings()
                     {
                         Enable   = true,
-                        Id       = "Reductech.Sequence.Connectors.Rest",
+                        Id       = "Sequence.Connectors.Rest",
                         Settings = dictionary,
                         Version  = "1.0"
                     },
@@ -144,7 +144,7 @@ public partial class IntegrationTests
                     new ConnectorSettings()
                     {
                         Enable   = true,
-                        Id       = "Reductech.Sequence.Connectors.Rest",
+                        Id       = "Sequence.Connectors.Rest",
                         Settings = dictionary,
                         Version  = "1.0"
                     },
@@ -184,7 +184,7 @@ public partial class IntegrationTests
                     new ConnectorSettings()
                     {
                         Enable   = true,
-                        Id       = "Reductech.Sequence.Connectors.Rest",
+                        Id       = "Sequence.Connectors.Rest",
                         Settings = dictionary,
                         Version  = "1.0"
                     },

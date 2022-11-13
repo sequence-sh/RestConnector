@@ -1,8 +1,8 @@
 ﻿using System.Text.Json;
-using Reductech.Sequence.Core.Internal.Errors;
+using Sequence.Core.Internal.Errors;
 using RestSharp;
 
-namespace Reductech.Sequence.Connectors.Rest.Steps;
+namespace Sequence.Connectors.Rest.Steps;
 
 /// <summary>
 /// A step that calls a rest service

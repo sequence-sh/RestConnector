@@ -1,7 +1,7 @@
-﻿using Reductech.Sequence.Core.Internal.Errors;
+﻿using Sequence.Core.Internal.Errors;
 using RestSharp;
 
-namespace Reductech.Sequence.Connectors.Rest.Steps;
+namespace Sequence.Connectors.Rest.Steps;
 
 /// <summary>
 /// Executes a REST Patch request

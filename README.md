@@ -1,4 +1,4 @@
-# Sequence® Rest Connector
+# Sequence REST Connector
 
 [Sequence®](https://sequence.sh) is a collection of libraries for
 automation of cross-application e-discovery and forensic workflows.
@@ -8,10 +8,10 @@ The REST Connector enables users to interact with REST services in sequences.
 This connector works by generating steps from an OpenAPI specification defined in the configuration.
 
 ```json
-  "reductech-scl.sequence.connectors": {
-    "Reductech.Sequence.Connectors.Rest": {
-      "Id": "Reductech.Sequence.Connectors.Rest",
-      "Version": "0.13.0",
+  "Sequence.Connectors.Rest": {
+    "Sequence.Connectors.Rest": {
+      "Id": "Sequence.Connectors.Rest",
+      "Version": "0.18.0",
       "Settings": {
         "Specifications": [{
             "Name": "Examples",
@@ -53,7 +53,7 @@ https://sequence.sh/playground
 
 # Package Releases
 
-Can be downloaded from the [Releases page](https://gitlab.com/reductech/edr/connectors/rest/-/releases).
+Can be downloaded from the [Releases page](https://gitlab.com/sequence/connectors/rest/-/releases).
 
 # NuGet Packages
 

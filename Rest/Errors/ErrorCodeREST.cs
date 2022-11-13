@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
-using Reductech.Sequence.Core.Internal.Errors;
+using Sequence.Core.Internal.Errors;
 
-namespace Reductech.Sequence.Connectors.Rest.Errors;
+namespace Sequence.Connectors.Rest.Errors;
 
 /// <summary>
 /// Error Codes for the REST connector

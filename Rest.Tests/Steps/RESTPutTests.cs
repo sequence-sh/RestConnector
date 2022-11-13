@@ -1,4 +1,4 @@
-﻿namespace Reductech.Sequence.Connectors.Rest.Tests.Steps;
+﻿namespace Sequence.Connectors.Rest.Tests.Steps;
 
 public partial class RESTPutTests : StepTestBase<RESTPut, Unit>
 {
