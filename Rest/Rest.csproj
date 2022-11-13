@@ -13,7 +13,7 @@
 
   <PropertyGroup>
     <PackageId>Sequence.Connectors.Rest</PackageId>
-    <Title>Sequence® REST Connector</Title>
+    <Title>Sequence REST Connector</Title>
     <Description>Sequence connector for REST APIs. Steps are dynamically generated from OpenAPI schemas.</Description>
     <Product>Sequence®</Product>
     <PackageTags>ediscovery;forensics;edrm;automation;orchestration;sequence;api;rest;openapi;</PackageTags>
