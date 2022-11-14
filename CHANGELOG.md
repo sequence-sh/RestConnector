@@ -1,3 +1,11 @@
+# v0.18.0 (2022-11-14)
+
+## Issues Closed in this Release
+
+### Other
+
+- Update namespace and paths after move to Sequence group #118
+
 # v0.17.0 (2022-08-29)
 
 Maintenance release - dependency updates only.
@@ -95,4 +103,5 @@ Initial release. Version numbers are aligned with [Core](https://gitlab.com/redu
 ### Other
 
 - Create more tests for REST connector #5
+
 
